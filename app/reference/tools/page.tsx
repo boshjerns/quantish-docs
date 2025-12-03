@@ -51,7 +51,7 @@ export default function AllToolsPage() {
   ];
 
   const ToolTable = ({ tools, color }: { tools: typeof polymarketTools; color: string }) => {
-    const categories = [...new Set(tools.map(t => t.category))];
+    const categories = Array.from(new Set(tools.map(t => t.category)));
     
     return (
       <div className="space-y-6">
