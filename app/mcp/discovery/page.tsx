@@ -191,29 +191,9 @@ export default function DiscoveryMCP() {
             Exceeding limit returns HTTP 429
           </li>
         </ul>
-      </div>
-
-      {/* Database Stats */}
-      <div className="card mt-8">
-        <h2 className="text-lg font-bold mb-4 uppercase tracking-tight">Database Coverage</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div className="p-4 border-2 border-[hsl(var(--border))]">
-            <div className="text-2xl font-bold">9,300+</div>
-            <div className="text-xs uppercase tracking-wider text-[hsl(var(--muted-foreground))]">Total Markets</div>
-          </div>
-          <div className="p-4 border-2 border-[hsl(var(--border))]">
-            <div className="text-2xl font-bold">4,600+</div>
-            <div className="text-xs uppercase tracking-wider text-[hsl(var(--muted-foreground))]">Polymarket</div>
-          </div>
-          <div className="p-4 border-2 border-[hsl(var(--border))]">
-            <div className="text-2xl font-bold">4,600+</div>
-            <div className="text-xs uppercase tracking-wider text-[hsl(var(--muted-foreground))]">Kalshi</div>
-          </div>
-          <div className="p-4 border-2 border-[hsl(var(--border))]">
-            <div className="text-2xl font-bold">8</div>
-            <div className="text-xs uppercase tracking-wider text-[hsl(var(--muted-foreground))]">Categories</div>
-          </div>
-        </div>
+        <p className="text-sm text-[hsl(var(--muted-foreground))] mt-4">
+          Use <code className="px-1 bg-[hsl(var(--muted))] border border-[hsl(var(--border))]">get_market_stats</code> to get live database coverage statistics.
+        </p>
       </div>
     </>
   );
