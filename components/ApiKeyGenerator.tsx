@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Key, Copy, Check, Loader2, AlertCircle, ChevronDown } from 'lucide-react';
+import { Key, Copy, Check, Loader2, AlertCircle } from 'lucide-react';
 
 type ServerType = 'discovery' | 'polymarket' | 'kalshi';
 
@@ -154,19 +154,19 @@ export default function ApiKeyGenerator() {
 
   return (
     <div className="card max-w-2xl mx-auto">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 bg-quantish-blue rounded-lg flex items-center justify-center">
-          <Key className="text-white" size={20} />
+      <div className="flex items-center gap-4 mb-8">
+        <div className="w-12 h-12 bg-[hsl(var(--primary))] flex items-center justify-center border-2 border-[hsl(var(--border))]">
+          <Key className="text-[hsl(var(--primary-foreground))]" size={24} strokeWidth={2.5} />
         </div>
         <div>
-          <h2 className="text-xl font-semibold">Generate API Key</h2>
-          <p className="text-sm text-gray-500">Get instant access to Quantish MCP servers</p>
+          <h2 className="text-xl font-bold uppercase tracking-tight">Generate API Key</h2>
+          <p className="text-sm text-[hsl(var(--muted-foreground))]">Get instant access to Quantish MCP servers</p>
         </div>
       </div>
 
       {/* Server Selection */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+      <div className="mb-8">
+        <label className="block text-xs font-bold uppercase tracking-wider mb-3 text-[hsl(var(--muted-foreground))]">
           Select Server
         </label>
         <div className="grid grid-cols-3 gap-3">
@@ -178,14 +178,14 @@ export default function ApiKeyGenerator() {
                 setResult(null);
                 setError(null);
               }}
-              className={`p-3 rounded-lg border-2 text-left transition-all ${
+              className={`p-4 border-2 text-left transition-all ${
                 selectedServer === server
-                  ? 'border-quantish-blue bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
+                  ? 'border-[hsl(var(--primary))] bg-[hsl(var(--muted))] brutalist-shadow'
+                  : 'border-[hsl(var(--border))] hover:bg-[hsl(var(--muted))]'
               }`}
             >
-              <div className="font-medium text-sm">{SERVER_INFO[server].name}</div>
-              <div className="text-xs text-gray-500 mt-1">
+              <div className="font-bold text-sm uppercase">{SERVER_INFO[server].name}</div>
+              <div className="text-xs text-[hsl(var(--muted-foreground))] mt-1">
                 {SERVER_INFO[server].description}
               </div>
             </button>
@@ -194,9 +194,9 @@ export default function ApiKeyGenerator() {
       </div>
 
       {/* Form */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-[hsl(var(--muted-foreground))]">
             Email / User ID
           </label>
           <input
@@ -204,12 +204,12 @@ export default function ApiKeyGenerator() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quantish-blue focus:border-transparent"
+            className="w-full"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-[hsl(var(--muted-foreground))]">
             Key Name (optional)
           </label>
           <input
@@ -217,13 +217,13 @@ export default function ApiKeyGenerator() {
             value={keyName}
             onChange={(e) => setKeyName(e.target.value)}
             placeholder="My API Key"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quantish-blue focus:border-transparent"
+            className="w-full"
           />
         </div>
 
         {serverInfo.requiresAccessCode && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-[hsl(var(--muted-foreground))]">
               Access Code
             </label>
             <input
@@ -231,9 +231,9 @@ export default function ApiKeyGenerator() {
               value={accessCode}
               onChange={(e) => setAccessCode(e.target.value)}
               placeholder={serverInfo.accessCodeFormat}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-quantish-blue focus:border-transparent font-mono"
+              className="w-full font-mono"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-[hsl(var(--muted-foreground))] mt-2">
               Contact Quantish to get an access code for {serverInfo.name}
             </p>
           </div>
@@ -242,17 +242,17 @@ export default function ApiKeyGenerator() {
         <button
           onClick={generateKey}
           disabled={isLoading || !email || (serverInfo.requiresAccessCode && !accessCode)}
-          className="w-full pill-btn pill-btn-blue py-3 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full btn-primary py-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? (
             <>
-              <Loader2 size={18} className="animate-spin" />
-              Generating...
+              <Loader2 size={18} className="animate-spin" strokeWidth={2.5} />
+              GENERATING...
             </>
           ) : (
             <>
-              <Key size={18} />
-              Generate API Key
+              <Key size={18} strokeWidth={2.5} />
+              GENERATE API KEY
             </>
           )}
         </button>
@@ -260,81 +260,81 @@ export default function ApiKeyGenerator() {
 
       {/* Error */}
       {error && (
-        <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
-          <AlertCircle className="text-red-500 flex-shrink-0 mt-0.5" size={18} />
+        <div className="mt-8 p-4 border-2 border-red-600 bg-red-50 dark:bg-red-950 flex items-start gap-3">
+          <AlertCircle className="text-red-600 flex-shrink-0 mt-0.5" size={18} strokeWidth={2.5} />
           <div>
-            <div className="font-medium text-red-800">Error</div>
-            <div className="text-sm text-red-600">{error}</div>
+            <div className="font-bold text-red-800 dark:text-red-200 uppercase text-sm">Error</div>
+            <div className="text-sm text-red-700 dark:text-red-300">{error}</div>
           </div>
         </div>
       )}
 
       {/* Result */}
       {result && (
-        <div className="mt-6 space-y-4">
-          <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-            <div className="flex items-center gap-2 text-green-800 font-medium mb-2">
-              <Check size={18} />
+        <div className="mt-8 space-y-6">
+          <div className="p-4 border-2 border-green-600 bg-green-50 dark:bg-green-950">
+            <div className="flex items-center gap-2 text-green-800 dark:text-green-200 font-bold mb-2 uppercase text-sm">
+              <Check size={18} strokeWidth={2.5} />
               API Key Generated Successfully!
             </div>
-            <p className="text-sm text-green-700">
+            <p className="text-sm text-green-700 dark:text-green-300">
               Save this key securely - it cannot be retrieved again.
             </p>
           </div>
 
           {/* API Key */}
-          <div className="p-4 bg-gray-50 rounded-lg">
+          <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">API Key</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">API Key</span>
               <button
                 onClick={() => copyToClipboard(result.apiKey, 'apiKey')}
-                className="text-sm text-quantish-blue hover:underline flex items-center gap-1"
+                className="text-xs font-bold uppercase tracking-wider hover:text-[hsl(var(--primary))] dark:hover:text-[hsl(var(--accent))] flex items-center gap-1"
               >
-                {copied === 'apiKey' ? <Check size={14} /> : <Copy size={14} />}
+                {copied === 'apiKey' ? <Check size={14} strokeWidth={2.5} /> : <Copy size={14} strokeWidth={2.5} />}
                 {copied === 'apiKey' ? 'Copied!' : 'Copy'}
               </button>
             </div>
-            <code className="block p-3 bg-white border border-gray-200 rounded font-mono text-sm break-all">
+            <code className="block p-4 bg-[hsl(var(--muted))] border-2 border-[hsl(var(--border))] font-mono text-sm break-all">
               {result.apiKey}
             </code>
           </div>
 
           {/* API Secret (if available) */}
           {result.apiSecret && (
-            <div className="p-4 bg-gray-50 rounded-lg">
+            <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">API Secret (for HMAC signing)</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">API Secret (HMAC)</span>
                 <button
                   onClick={() => copyToClipboard(result.apiSecret!, 'apiSecret')}
-                  className="text-sm text-quantish-blue hover:underline flex items-center gap-1"
+                  className="text-xs font-bold uppercase tracking-wider hover:text-[hsl(var(--primary))] dark:hover:text-[hsl(var(--accent))] flex items-center gap-1"
                 >
-                  {copied === 'apiSecret' ? <Check size={14} /> : <Copy size={14} />}
+                  {copied === 'apiSecret' ? <Check size={14} strokeWidth={2.5} /> : <Copy size={14} strokeWidth={2.5} />}
                   {copied === 'apiSecret' ? 'Copied!' : 'Copy'}
                 </button>
               </div>
-              <code className="block p-3 bg-white border border-gray-200 rounded font-mono text-sm break-all">
+              <code className="block p-4 bg-[hsl(var(--muted))] border-2 border-[hsl(var(--border))] font-mono text-sm break-all">
                 {result.apiSecret}
               </code>
             </div>
           )}
 
           {/* Cursor Config */}
-          <div className="p-4 bg-gray-50 rounded-lg">
+          <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">Cursor MCP Config</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">Cursor MCP Config</span>
               <button
                 onClick={() => copyToClipboard(result.cursorConfig, 'config')}
-                className="text-sm text-quantish-blue hover:underline flex items-center gap-1"
+                className="text-xs font-bold uppercase tracking-wider hover:text-[hsl(var(--primary))] dark:hover:text-[hsl(var(--accent))] flex items-center gap-1"
               >
-                {copied === 'config' ? <Check size={14} /> : <Copy size={14} />}
+                {copied === 'config' ? <Check size={14} strokeWidth={2.5} /> : <Copy size={14} strokeWidth={2.5} />}
                 {copied === 'config' ? 'Copied!' : 'Copy'}
               </button>
             </div>
-            <pre className="p-3 bg-gray-900 text-gray-100 rounded font-mono text-sm overflow-x-auto">
+            <pre className="p-4 bg-[hsl(0_0%_5%)] text-gray-100 font-mono text-sm overflow-x-auto border-2 border-[hsl(var(--border))] brutalist-shadow">
               {result.cursorConfig}
             </pre>
-            <p className="text-xs text-gray-500 mt-2">
-              Add this to <code className="bg-gray-200 px-1 rounded">~/.cursor/mcp.json</code>
+            <p className="text-xs text-[hsl(var(--muted-foreground))] mt-2">
+              Add to <code className="bg-[hsl(var(--muted))] px-1 border border-[hsl(var(--border))]">~/.cursor/mcp.json</code>
             </p>
           </div>
         </div>
@@ -342,4 +342,3 @@ export default function ApiKeyGenerator() {
     </div>
   );
 }
-
