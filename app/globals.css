@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --quantish-blue: #4F6EF7;
+  --quantish-green: #22C55E;
+  --quantish-red: #EF4444;
+}
+
+/* Isometric background pattern */
+.bg-isometric {
+  background-color: #FAFAFA;
+  background-image: 
+    linear-gradient(30deg, #E5E5E5 12%, transparent 12.5%, transparent 87%, #E5E5E5 87.5%, #E5E5E5),
+    linear-gradient(150deg, #E5E5E5 12%, transparent 12.5%, transparent 87%, #E5E5E5 87.5%, #E5E5E5),
+    linear-gradient(30deg, #E5E5E5 12%, transparent 12.5%, transparent 87%, #E5E5E5 87.5%, #E5E5E5),
+    linear-gradient(150deg, #E5E5E5 12%, transparent 12.5%, transparent 87%, #E5E5E5 87.5%, #E5E5E5),
+    linear-gradient(60deg, #EBEBEB 25%, transparent 25.5%, transparent 75%, #EBEBEB 75%, #EBEBEB),
+    linear-gradient(60deg, #EBEBEB 25%, transparent 25.5%, transparent 75%, #EBEBEB 75%, #EBEBEB);
+  background-size: 80px 140px;
+  background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+}
+
+.dark .bg-isometric {
+  background-color: #0A0A0A;
+  background-image: 
+    linear-gradient(30deg, #262626 12%, transparent 12.5%, transparent 87%, #262626 87.5%, #262626),
+    linear-gradient(150deg, #262626 12%, transparent 12.5%, transparent 87%, #262626 87.5%, #262626),
+    linear-gradient(30deg, #262626 12%, transparent 12.5%, transparent 87%, #262626 87.5%, #262626),
+    linear-gradient(150deg, #262626 12%, transparent 12.5%, transparent 87%, #262626 87.5%, #262626),
+    linear-gradient(60deg, #1A1A1A 25%, transparent 25.5%, transparent 75%, #1A1A1A 75%, #1A1A1A),
+    linear-gradient(60deg, #1A1A1A 25%, transparent 25.5%, transparent 75%, #1A1A1A 75%, #1A1A1A);
+}
+
+/* Code block styling */
+pre {
+  @apply rounded-lg overflow-x-auto;
+}
+
+code {
+  @apply font-mono text-sm;
+}
+
+/* Pill button styles */
+.pill-btn {
+  @apply px-4 py-2 rounded-full text-sm font-medium transition-all duration-200;
+}
+
+.pill-btn-primary {
+  @apply bg-black text-white hover:bg-gray-800;
+}
+
+.pill-btn-outline {
+  @apply bg-white border border-gray-300 text-black hover:bg-gray-50;
+}
+
+.pill-btn-blue {
+  @apply bg-quantish-blue text-white hover:bg-quantish-blue-hover;
+}
+
+/* Card styles */
+.card {
+  @apply bg-white border border-gray-200 rounded-xl p-6 shadow-sm;
+}
+
+.dark .card {
+  @apply bg-gray-900 border-gray-800;
+}
+
+/* Success/Error indicators */
+.indicator-success {
+  @apply text-quantish-green bg-green-50 border-green-200;
+}
+
+.indicator-error {
+  @apply text-quantish-red bg-red-50 border-red-200;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+.dark ::-webkit-scrollbar-track {
+  @apply bg-gray-900;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-gray-700;
+}
+
