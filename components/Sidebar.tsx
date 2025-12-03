@@ -52,14 +52,14 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 border-r border-gray-200 bg-white/80 backdrop-blur-sm h-screen sticky top-0 overflow-y-auto">
+    <aside className="sidebar w-64 h-screen sticky top-0 overflow-y-auto">
       {/* Logo */}
-      <div className="p-6 border-b border-gray-200">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">Q</span>
+      <div className="p-6 border-b-2 border-[hsl(var(--border))]">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-[hsl(var(--primary))] flex items-center justify-center border-2 border-[hsl(var(--border))] brutalist-shadow">
+            <span className="text-[hsl(var(--primary-foreground))] font-bold text-lg">Q</span>
           </div>
-          <span className="font-semibold text-lg">Quantish Docs</span>
+          <span className="font-bold text-lg tracking-tight uppercase">Quantish</span>
         </Link>
       </div>
 
@@ -67,7 +67,7 @@ export default function Sidebar() {
       <nav className="p-4">
         {navigation.map((section) => (
           <div key={section.title} className="mb-6">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 px-3">
+            <h3 className="text-xs font-bold uppercase tracking-widest mb-3 px-3 text-[hsl(var(--muted-foreground))]">
               {section.title}
             </h3>
             <ul className="space-y-1">
@@ -78,13 +78,9 @@ export default function Sidebar() {
                   <li key={item.name}>
                     <Link
                       href={item.href}
-                      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                        isActive
-                          ? 'bg-black text-white'
-                          : 'text-gray-700 hover:bg-gray-100'
-                      }`}
+                      className={`sidebar-link text-sm ${isActive ? 'active' : ''}`}
                     >
-                      <Icon size={16} />
+                      <Icon size={16} strokeWidth={2.5} />
                       {item.name}
                     </Link>
                   </li>
@@ -95,28 +91,27 @@ export default function Sidebar() {
         ))}
 
         {/* External links */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
+        <div className="mt-8 pt-6 border-t-2 border-[hsl(var(--border))]">
           <a
             href="https://quantish.live"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-black transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-sm font-medium hover:bg-[hsl(var(--muted))] transition-colors"
           >
-            <ExternalLink size={14} />
-            quantish.live
+            <ExternalLink size={14} strokeWidth={2.5} />
+            QUANTISH.LIVE
           </a>
           <a
             href="https://github.com/boshjerns/polymarket-mcp-server"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-black transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-sm font-medium hover:bg-[hsl(var(--muted))] transition-colors"
           >
-            <ExternalLink size={14} />
-            GitHub
+            <ExternalLink size={14} strokeWidth={2.5} />
+            GITHUB
           </a>
         </div>
       </nav>
     </aside>
   );
 }
-

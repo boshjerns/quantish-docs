@@ -1,107 +1,343 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-
 :root {
-  --quantish-blue: #4F6EF7;
-  --quantish-green: #22C55E;
-  --quantish-red: #EF4444;
+  /* LIGHT MODE - Clean, Paper-like, Swiss Style */
+  --background: 0 0% 100%;
+  --foreground: 0 0% 5%;
+  
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 5%;
+  
+  --primary: 0 0% 0%;
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 5%;
+  
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 45%;
+  
+  --accent: 0 0% 96%;
+  --accent-foreground: 0 0% 5%;
+  
+  --border: 0 0% 0%;
+  --input: 0 0% 0%;
+  --ring: 0 0% 5%;
+  
+  --quantish-blue: #000000;
 }
 
-/* Isometric background pattern */
-.bg-isometric {
-  background-color: #FAFAFA;
-  background-image: 
-    linear-gradient(30deg, #E5E5E5 12%, transparent 12.5%, transparent 87%, #E5E5E5 87.5%, #E5E5E5),
-    linear-gradient(150deg, #E5E5E5 12%, transparent 12.5%, transparent 87%, #E5E5E5 87.5%, #E5E5E5),
-    linear-gradient(30deg, #E5E5E5 12%, transparent 12.5%, transparent 87%, #E5E5E5 87.5%, #E5E5E5),
-    linear-gradient(150deg, #E5E5E5 12%, transparent 12.5%, transparent 87%, #E5E5E5 87.5%, #E5E5E5),
-    linear-gradient(60deg, #EBEBEB 25%, transparent 25.5%, transparent 75%, #EBEBEB 75%, #EBEBEB),
-    linear-gradient(60deg, #EBEBEB 25%, transparent 25.5%, transparent 75%, #EBEBEB 75%, #EBEBEB);
-  background-size: 80px 140px;
-  background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+.dark {
+  /* DARK MODE - High Contrast Cyberpunk Brutalism */
+  --background: 0 0% 5%;
+  --foreground: 0 0% 90%;
+  
+  --card: 0 0% 0%;
+  --card-foreground: 0 0% 90%;
+  
+  --primary: 323 100% 50%;
+  --primary-foreground: 0 0% 0%;
+  
+  --secondary: 180 100% 40%;
+  --secondary-foreground: 0 0% 0%;
+  
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 50%;
+  
+  --accent: 120 100% 40%;
+  --accent-foreground: 0 0% 0%;
+  
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 323 100% 50%;
+  
+  --quantish-blue: hsl(323, 100%, 50%);
 }
 
-.dark .bg-isometric {
-  background-color: #0A0A0A;
-  background-image: 
-    linear-gradient(30deg, #262626 12%, transparent 12.5%, transparent 87%, #262626 87.5%, #262626),
-    linear-gradient(150deg, #262626 12%, transparent 12.5%, transparent 87%, #262626 87.5%, #262626),
-    linear-gradient(30deg, #262626 12%, transparent 12.5%, transparent 87%, #262626 87.5%, #262626),
-    linear-gradient(150deg, #262626 12%, transparent 12.5%, transparent 87%, #262626 87.5%, #262626),
-    linear-gradient(60deg, #1A1A1A 25%, transparent 25.5%, transparent 75%, #1A1A1A 75%, #1A1A1A),
-    linear-gradient(60deg, #1A1A1A 25%, transparent 25.5%, transparent 75%, #1A1A1A 75%, #1A1A1A);
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  /* Dark Mode Scanlines */
+  .dark body::after {
+    content: "";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 3px, 3px 100%;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  code, pre {
+    font-family: 'Space Mono', monospace;
+  }
 }
 
-/* Code block styling */
-pre {
-  @apply rounded-lg overflow-x-auto;
+@layer components {
+  /* Brutalist Card */
+  .card {
+    background-color: hsl(var(--card));
+    border: 2px solid hsl(var(--border));
+    padding: 1.5rem;
+    position: relative;
+    transition: all 0.15s ease;
+    box-shadow: 4px 4px 0px 0px hsl(var(--border));
+  }
+  
+  .card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px hsl(var(--border));
+  }
+
+  /* Brutalist Button - Primary */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border: 2px solid hsl(var(--border));
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.875rem;
+    transition: all 0.15s ease;
+    box-shadow: 4px 4px 0px 0px hsl(var(--border));
+    cursor: pointer;
+  }
+  
+  .btn-primary:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px hsl(var(--border));
+  }
+  
+  .btn-primary:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px 0px hsl(var(--border));
+  }
+
+  /* Brutalist Button - Secondary */
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    border: 2px solid hsl(var(--border));
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.875rem;
+    transition: all 0.15s ease;
+    box-shadow: 4px 4px 0px 0px hsl(var(--border));
+    cursor: pointer;
+  }
+  
+  .btn-secondary:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px hsl(var(--border));
+  }
+
+  /* Sidebar */
+  .sidebar {
+    background-color: hsl(var(--background));
+    border-right: 2px solid hsl(var(--border));
+  }
+
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    color: hsl(var(--foreground));
+    font-weight: 500;
+    transition: all 0.15s ease;
+    border: 2px solid transparent;
+  }
+
+  .sidebar-link:hover {
+    background-color: hsl(var(--muted));
+    border-color: hsl(var(--border));
+  }
+
+  .sidebar-link.active {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-color: hsl(var(--border));
+    box-shadow: 3px 3px 0px 0px hsl(var(--border));
+  }
+
+  /* Header */
+  .header {
+    background-color: hsl(var(--background));
+    border-bottom: 2px solid hsl(var(--border));
+  }
+
+  /* Code blocks */
+  pre {
+    background-color: hsl(0 0% 5%) !important;
+    border: 2px solid hsl(var(--border));
+    box-shadow: 4px 4px 0px 0px hsl(var(--border));
+  }
+
+  code:not(pre code) {
+    background-color: hsl(var(--muted));
+    padding: 0.125rem 0.375rem;
+    border: 1px solid hsl(var(--border));
+    font-size: 0.875em;
+  }
+
+  /* Input fields */
+  input, textarea {
+    background-color: hsl(var(--background));
+    border: 2px solid hsl(var(--border));
+    padding: 0.75rem 1rem;
+    transition: all 0.15s ease;
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    box-shadow: 4px 4px 0px 0px hsl(var(--border));
+    transform: translate(-2px, -2px);
+  }
+
+  /* Alert boxes */
+  .alert-warning {
+    background-color: hsl(45 100% 95%);
+    border: 2px solid hsl(var(--border));
+    box-shadow: 4px 4px 0px 0px hsl(var(--border));
+  }
+  
+  .dark .alert-warning {
+    background-color: hsl(45 100% 10%);
+    color: hsl(45 100% 70%);
+  }
+
+  .alert-success {
+    background-color: hsl(120 100% 95%);
+    border: 2px solid hsl(var(--border));
+    box-shadow: 4px 4px 0px 0px hsl(var(--border));
+  }
+  
+  .dark .alert-success {
+    background-color: hsl(120 100% 10%);
+    color: hsl(120 100% 70%);
+  }
+
+  /* Footer */
+  .footer {
+    border-top: 2px solid hsl(var(--border));
+  }
 }
 
-code {
-  @apply font-mono text-sm;
+@layer utilities {
+  .brutalist-shadow {
+    box-shadow: 4px 4px 0px 0px hsl(var(--border));
+  }
+
+  .text-quantish-blue {
+    color: var(--quantish-blue);
+  }
+
+  .bg-quantish-blue {
+    background-color: var(--quantish-blue);
+  }
+
+  /* No border radius - brutalist */
+  .rounded, .rounded-sm, .rounded-md, .rounded-lg, .rounded-xl, .rounded-2xl, .rounded-3xl, .rounded-full {
+    border-radius: 0 !important;
+  }
+
+  /* Pill buttons override - now brutalist */
+  .pill-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid hsl(var(--border));
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.875rem;
+    transition: all 0.15s ease;
+    box-shadow: 4px 4px 0px 0px hsl(var(--border));
+  }
+
+  .pill-btn-primary {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .pill-btn-outline {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
+  .pill-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px hsl(var(--border));
+  }
+
+  /* Isometric background - now grid pattern */
+  .bg-isometric {
+    background-color: hsl(var(--background));
+    background-image: 
+      linear-gradient(hsl(var(--border) / 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .dark .bg-isometric {
+    background-image: 
+      linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
+  }
+
+  /* Scrollbar styling */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
-/* Pill button styles */
-.pill-btn {
-  @apply px-4 py-2 rounded-full text-sm font-medium transition-all duration-200;
+/* Dark mode toggle animation */
+.dark-mode-toggle {
+  transition: transform 0.3s ease;
 }
 
-.pill-btn-primary {
-  @apply bg-black text-white hover:bg-gray-800;
+.dark .dark-mode-toggle {
+  transform: rotate(180deg);
 }
-
-.pill-btn-outline {
-  @apply bg-white border border-gray-300 text-black hover:bg-gray-50;
-}
-
-.pill-btn-blue {
-  @apply bg-quantish-blue text-white hover:bg-quantish-blue-hover;
-}
-
-/* Card styles */
-.card {
-  @apply bg-white border border-gray-200 rounded-xl p-6 shadow-sm;
-}
-
-.dark .card {
-  @apply bg-gray-900 border-gray-800;
-}
-
-/* Success/Error indicators */
-.indicator-success {
-  @apply text-quantish-green bg-green-50 border-green-200;
-}
-
-.indicator-error {
-  @apply text-quantish-red bg-red-50 border-red-200;
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-gray-100;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400;
-}
-
-.dark ::-webkit-scrollbar-track {
-  @apply bg-gray-900;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  @apply bg-gray-700;
-}
-

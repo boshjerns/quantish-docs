@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased">
+      <body>
         <div className="flex min-h-screen bg-isometric">
           <Sidebar />
           <div className="flex-1 flex flex-col">
@@ -28,14 +28,11 @@ export default function RootLayout({
                 {children}
               </div>
             </main>
-            <footer className="border-t border-gray-200 py-6 px-8">
-              <div className="max-w-5xl mx-auto flex items-center justify-between text-sm text-gray-500">
-                <div>© 2025 Quantish. All rights reserved.</div>
-                <div className="flex items-center gap-4">
-                  <a href="mailto:hello@quantish.live" className="hover:text-gray-900">
-                    Contact
-                  </a>
-                  <a href="https://github.com/boshjerns/polymarket-mcp-server" className="hover:text-gray-900">
+            <footer className="footer py-6 px-8">
+              <div className="max-w-5xl mx-auto flex items-center justify-between text-sm">
+                <div className="font-medium">© 2025 QUANTISH</div>
+                <div className="flex items-center gap-6">
+                  <a href="https://github.com/boshjerns/polymarket-mcp-server" className="font-bold uppercase tracking-wider hover:text-[hsl(var(--primary))] dark:hover:text-[hsl(var(--accent))] transition-colors">
                     GitHub
                   </a>
                 </div>
