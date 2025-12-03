@@ -74,10 +74,8 @@ export default function KalshiMCP() {
       <div className="card mb-8 border-amber-200 bg-amber-50">
         <h3 className="font-semibold text-amber-900 mb-2">⚠️ Requirements</h3>
         <ul className="text-sm text-amber-800 space-y-1">
-          <li>• Access code required (format: KALSHI-XXXX-XXXX-XXXX)</li>
-          <li>• Contact <a href="mailto:hello@quantish.live" className="underline">hello@quantish.live</a> for access</li>
-          <li>• Solana wallet required (generated or imported)</li>
-          <li>• USDC on Solana for trading</li>
+          <li>• Access code required to generate API key</li>
+          <li>• USDC on Solana for trading (wallet setup/import handled by the MCP)</li>
         </ul>
       </div>
 
@@ -98,17 +96,16 @@ export default function KalshiMCP() {
         </pre>
       </div>
 
-      {/* Key Difference */}
+      {/* Key Feature */}
       <div className="card mb-8 border-green-200 bg-green-50">
         <h3 className="font-semibold text-green-900 mb-2">🔑 Bring Your Own Wallet (BYOW)</h3>
         <p className="text-sm text-green-800 mb-3">
-          Unlike Polymarket, you can import your existing Phantom or Solflare wallet:
+          You can generate a new wallet or import your existing Phantom/Solflare wallet:
         </p>
         <ol className="text-sm text-green-700 space-y-1 list-decimal list-inside">
-          <li>Export your private key from Phantom</li>
-          <li>Encrypt it locally using our encryption script</li>
-          <li>Import the encrypted bundle - we never see your raw key</li>
-          <li>Provide password when making transactions</li>
+          <li>Use <code className="bg-green-100 px-1 rounded">kalshi_setup_wallet</code> to generate a new wallet, OR</li>
+          <li>Use <code className="bg-green-100 px-1 rounded">kalshi_import_wallet</code> to import from Phantom</li>
+          <li>Your private key is encrypted locally - we never see the raw key</li>
         </ol>
       </div>
 

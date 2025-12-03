@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 
 const toolCategories = [
   {
@@ -76,9 +75,8 @@ export default function PolymarketMCP() {
       <div className="card mb-8 border-amber-200 bg-amber-50">
         <h3 className="font-semibold text-amber-900 mb-2">⚠️ Requirements</h3>
         <ul className="text-sm text-amber-800 space-y-1">
-          <li>• Access code required (format: QNT-XXXX-XXXX-XXXX)</li>
-          <li>• Contact <a href="mailto:hello@quantish.live" className="underline">hello@quantish.live</a> for access</li>
-          <li>• Wallet setup required before trading</li>
+          <li>• Access code required to generate API key</li>
+          <li>• USDC on Polygon for trading (wallet setup is handled by the MCP)</li>
         </ul>
       </div>
 
@@ -121,20 +119,20 @@ export default function PolymarketMCP() {
 
       {/* Trading Flow */}
       <div className="card mt-8">
-        <h2 className="text-lg font-semibold mb-4">Trading Flow</h2>
+        <h2 className="text-lg font-semibold mb-4">Getting Started</h2>
         <ol className="space-y-3">
           <li className="flex items-start gap-3">
             <span className="w-6 h-6 bg-black text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">1</span>
             <div>
               <strong>Get API Key</strong>
-              <p className="text-sm text-gray-600">Use request_api_key with your access code</p>
+              <p className="text-sm text-gray-600">Use <code className="bg-gray-100 px-1 rounded">request_api_key</code> with your access code</p>
             </div>
           </li>
           <li className="flex items-start gap-3">
             <span className="w-6 h-6 bg-black text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">2</span>
             <div>
               <strong>Setup Wallet</strong>
-              <p className="text-sm text-gray-600">Call setup_wallet to deploy Safe and get CLOB credentials</p>
+              <p className="text-sm text-gray-600">Use <code className="bg-gray-100 px-1 rounded">setup_wallet</code> to deploy your Safe and get CLOB credentials</p>
             </div>
           </li>
           <li className="flex items-start gap-3">
@@ -148,7 +146,7 @@ export default function PolymarketMCP() {
             <span className="w-6 h-6 bg-black text-white rounded-full flex items-center justify-center text-xs flex-shrink-0">4</span>
             <div>
               <strong>Trade</strong>
-              <p className="text-sm text-gray-600">Use place_order to buy/sell shares</p>
+              <p className="text-sm text-gray-600">Use <code className="bg-gray-100 px-1 rounded">place_order</code> to buy/sell shares</p>
             </div>
           </li>
         </ol>
