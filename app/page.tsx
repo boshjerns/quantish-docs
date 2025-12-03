@@ -1,24 +1,28 @@
 import Link from 'next/link';
-import { Key, Zap, Search, TrendingUp, Wallet, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import { Key, Zap, Search, ArrowRight } from 'lucide-react';
 
 const features = [
   {
-    icon: Search,
     title: 'Discovery API',
     description: 'Search and discover markets across Polymarket, Kalshi, and more platforms.',
     href: '/mcp/discovery',
+    logo: null,
+    iconType: 'search',
   },
   {
-    icon: TrendingUp,
     title: 'Polymarket Trading',
     description: 'Execute trades on Polymarket with secure wallet management.',
     href: '/mcp/polymarket',
+    logo: '/polymarket-logo.svg',
+    iconType: null,
   },
   {
-    icon: Wallet,
     title: 'Kalshi Trading',
     description: 'Trade on Kalshi prediction markets via Solana and DFlow.',
     href: '/mcp/kalshi',
+    logo: '/kalshi-logo.svg',
+    iconType: null,
   },
 ];
 
@@ -48,29 +52,34 @@ export default function Home() {
 
       {/* Feature Cards */}
       <div className="grid md:grid-cols-3 gap-6 mb-16">
-        {features.map((feature) => {
-          const Icon = feature.icon;
-          return (
-            <Link
-              key={feature.title}
-              href={feature.href}
-              className="card group"
-            >
-              <div className="w-14 h-14 bg-[hsl(var(--primary))] flex items-center justify-center mb-6 border-2 border-[hsl(var(--border))]">
-                <Icon className="text-[hsl(var(--primary-foreground))]" size={28} strokeWidth={2} />
-              </div>
-              <h3 className="text-xl font-bold mb-3 uppercase tracking-tight group-hover:text-[hsl(var(--primary))] dark:group-hover:text-[hsl(var(--accent))] transition-colors">
-                {feature.title}
-              </h3>
-              <p className="text-[hsl(var(--muted-foreground))] text-sm mb-6">
-                {feature.description}
-              </p>
-              <span className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider">
-                Learn more <ArrowRight size={16} strokeWidth={2.5} />
-              </span>
-            </Link>
-          );
-        })}
+        {features.map((feature) => (
+          <Link
+            key={feature.title}
+            href={feature.href}
+            className="card group"
+          >
+            <div className="w-14 h-14 bg-[hsl(var(--primary))] flex items-center justify-center mb-6 border-2 border-[hsl(var(--border))] p-2">
+              {feature.logo ? (
+                <img 
+                  src={feature.logo} 
+                  alt={feature.title} 
+                  className="w-full h-full object-contain invert dark:invert-0"
+                />
+              ) : (
+                <Search className="text-[hsl(var(--primary-foreground))]" size={28} strokeWidth={2} />
+              )}
+            </div>
+            <h3 className="text-xl font-bold mb-3 uppercase tracking-tight group-hover:text-[hsl(var(--primary))] dark:group-hover:text-[hsl(var(--accent))] transition-colors">
+              {feature.title}
+            </h3>
+            <p className="text-[hsl(var(--muted-foreground))] text-sm mb-6">
+              {feature.description}
+            </p>
+            <span className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider">
+              Learn more <ArrowRight size={16} strokeWidth={2.5} />
+            </span>
+          </Link>
+        ))}
       </div>
 
       {/* Quick Links */}

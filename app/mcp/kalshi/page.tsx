@@ -51,17 +51,17 @@ export default function KalshiMCP() {
     <>
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <img 
-            src="https://kalshi.com/favicon.ico" 
-            alt="Kalshi"
-            width={48}
-            height={48}
-            className="rounded-xl bg-black p-1"
-          />
+        <div className="flex items-center gap-4 mb-4">
+          <div className="w-14 h-14 bg-[hsl(var(--primary))] flex items-center justify-center border-2 border-[hsl(var(--border))] p-2">
+            <img 
+              src="/kalshi-logo.svg" 
+              alt="Kalshi"
+              className="w-full h-full object-contain invert dark:invert-0"
+            />
+          </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Kalshi MCP</h1>
-            <p className="text-gray-500">kalshi-mcp-server-production.up.railway.app</p>
+            <h1 className="text-3xl font-bold uppercase tracking-tight">Kalshi MCP</h1>
+            <p className="text-[hsl(var(--muted-foreground))] font-mono text-sm">kalshi-mcp-server-production.up.railway.app</p>
           </div>
         </div>
         <p className="text-gray-600">

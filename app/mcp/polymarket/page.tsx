@@ -52,17 +52,17 @@ export default function PolymarketMCP() {
     <>
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <img 
-            src="https://polymarket.com/favicon.ico" 
-            alt="Polymarket"
-            width={48}
-            height={48}
-            className="rounded-xl"
-          />
+        <div className="flex items-center gap-4 mb-4">
+          <div className="w-14 h-14 bg-[hsl(var(--primary))] flex items-center justify-center border-2 border-[hsl(var(--border))] p-2">
+            <img 
+              src="/polymarket-logo.svg" 
+              alt="Polymarket"
+              className="w-full h-full object-contain invert dark:invert-0"
+            />
+          </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Polymarket MCP</h1>
-            <p className="text-gray-500">quantish-sdk-production.up.railway.app</p>
+            <h1 className="text-3xl font-bold uppercase tracking-tight">Polymarket MCP</h1>
+            <p className="text-[hsl(var(--muted-foreground))] font-mono text-sm">quantish-sdk-production.up.railway.app</p>
           </div>
         </div>
         <p className="text-gray-600">
