@@ -35,10 +35,12 @@ export default function QuickStart() {
             <div className="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center font-bold text-sm">
               2
             </div>
-            <h2 className="text-xl font-semibold">Configure Cursor MCP</h2>
+            <h2 className="text-xl font-semibold">Configure Your MCP Client</h2>
           </div>
+
+          <h3 className="font-medium text-gray-900 mb-2">For Cursor</h3>
           <p className="text-gray-600 mb-4">
-            Add your MCP configuration to Cursor. Edit or create{' '}
+            Edit or create{' '}
             <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">~/.cursor/mcp.json</code>:
           </p>
           <pre className="p-4 bg-gray-900 text-gray-100 rounded-lg font-mono text-sm overflow-x-auto">
@@ -46,21 +48,42 @@ export default function QuickStart() {
   "mcpServers": {
     "quantish_discovery": {
       "url": "https://quantish.live/mcp",
-      "headers": {
-        "X-API-Key": "YOUR_DISCOVERY_KEY"
-      }
+      "headers": { "X-API-Key": "YOUR_DISCOVERY_KEY" }
     },
     "quantish": {
       "url": "https://quantish-sdk-production.up.railway.app/mcp",
-      "headers": {
-        "x-api-key": "YOUR_POLYMARKET_KEY"
-      }
+      "headers": { "x-api-key": "YOUR_POLYMARKET_KEY" }
     },
     "quantish_kalshi": {
-      "url": "https://kalshi-mcp-server-production.up.railway.app/mcp",
-      "headers": {
-        "x-api-key": "YOUR_KALSHI_KEY"
-      }
+      "url": "https://kalshi-mcp-production-7c2c.up.railway.app/mcp",
+      "headers": { "x-api-key": "YOUR_KALSHI_KEY" }
+    }
+  }
+}`}
+          </pre>
+
+          <h3 className="font-medium text-gray-900 mt-6 mb-2">For Claude Code</h3>
+          <p className="text-gray-600 mb-4">
+            Edit or create{' '}
+            <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">~/.claude/settings.json</code>:
+          </p>
+          <pre className="p-4 bg-gray-900 text-gray-100 rounded-lg font-mono text-sm overflow-x-auto">
+{`{
+  "mcpServers": {
+    "quantish-discovery": {
+      "type": "url",
+      "url": "https://quantish.live/mcp",
+      "headers": { "X-API-Key": "YOUR_DISCOVERY_KEY" }
+    },
+    "quantish": {
+      "type": "url",
+      "url": "https://quantish-sdk-production.up.railway.app/mcp",
+      "headers": { "x-api-key": "YOUR_POLYMARKET_KEY" }
+    },
+    "quantish-kalshi": {
+      "type": "url",
+      "url": "https://kalshi-mcp-production-7c2c.up.railway.app/mcp",
+      "headers": { "x-api-key": "YOUR_KALSHI_KEY" }
     }
   }
 }`}

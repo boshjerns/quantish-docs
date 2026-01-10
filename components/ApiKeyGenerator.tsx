@@ -34,9 +34,8 @@ const SERVER_INFO: Record<ServerType, {
   kalshi: {
     name: 'Kalshi',
     description: 'Trade on Kalshi prediction markets (Solana)',
-    endpoint: 'https://kalshi-mcp-server-production.up.railway.app',
-    requiresAccessCode: true,
-    accessCodeFormat: 'KALSHI-XXXX-XXXX-XXXX',
+    endpoint: 'https://kalshi-mcp-production-7c2c.up.railway.app',
+    requiresAccessCode: false,
   },
 };
 
@@ -87,11 +86,16 @@ export default function ApiKeyGenerator() {
         });
       } else {
         // Polymarket and Kalshi use MCP tools directly
-        const toolName = selectedServer === 'kalshi' ? 'kalshi_request_api_key' : 'request_api_key';
-        
+        const toolName = selectedServer === 'kalshi' ? 'kalshi_signup' : 'request_api_key';
+
+        // Build arguments based on server type
+        const args = selectedServer === 'kalshi'
+          ? { externalId: email, keyName: keyName || 'Docs Generated Key' }
+          : { accessCode, externalId: email, keyName: keyName || 'Docs Generated Key' };
+
         const response = await fetch(`${serverInfo.endpoint}/mcp`, {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           },
@@ -101,11 +105,7 @@ export default function ApiKeyGenerator() {
             method: 'tools/call',
             params: {
               name: toolName,
-              arguments: {
-                accessCode,
-                externalId: email,
-                keyName: keyName || 'Docs Generated Key',
-              },
+              arguments: args,
             },
           }),
         });

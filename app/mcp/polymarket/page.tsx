@@ -82,11 +82,27 @@ export default function PolymarketMCP() {
 
       {/* Quick Setup */}
       <div className="card mb-8">
-        <h2 className="text-lg font-semibold mb-4">Quick Setup</h2>
+        <h2 className="text-lg font-semibold mb-4">Quick Setup (Cursor)</h2>
+        <p className="text-sm text-gray-600 mb-3">Add to <code className="bg-gray-100 px-1 rounded">~/.cursor/mcp.json</code>:</p>
         <pre className="p-4 bg-gray-900 text-gray-100 rounded-lg font-mono text-sm overflow-x-auto">
 {`{
   "mcpServers": {
     "quantish": {
+      "url": "https://quantish-sdk-production.up.railway.app/mcp",
+      "headers": {
+        "x-api-key": "YOUR_API_KEY"
+      }
+    }
+  }
+}`}
+        </pre>
+        <h3 className="text-md font-semibold mt-6 mb-3">Claude Code</h3>
+        <p className="text-sm text-gray-600 mb-3">Add to <code className="bg-gray-100 px-1 rounded">~/.claude/settings.json</code>:</p>
+        <pre className="p-4 bg-gray-900 text-gray-100 rounded-lg font-mono text-sm overflow-x-auto">
+{`{
+  "mcpServers": {
+    "quantish": {
+      "type": "url",
       "url": "https://quantish-sdk-production.up.railway.app/mcp",
       "headers": {
         "x-api-key": "YOUR_API_KEY"

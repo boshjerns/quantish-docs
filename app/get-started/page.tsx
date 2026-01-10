@@ -48,12 +48,12 @@ export default function GetStarted() {
         <div className="card">
           <h2 className="text-xl font-semibold mb-4">Access Codes</h2>
           <p className="text-gray-600 mb-4">
-            Polymarket and Kalshi trading servers require an access code to generate API keys.
-            This helps us manage capacity and ensure quality service.
+            <strong>Polymarket</strong> requires an access code to generate API keys.
+            <strong>Discovery</strong> and <strong>Kalshi</strong> are open access - no code needed!
           </p>
           <div className="p-4 bg-gray-50 rounded-lg">
             <p className="text-sm text-gray-700">
-              <strong>To get an access code:</strong>
+              <strong>To get a Polymarket access code:</strong>
             </p>
             <ul className="list-disc list-inside text-sm text-gray-600 mt-2 space-y-1">
               <li>Email <a href="mailto:hello@quantish.live" className="text-quantish-blue hover:underline">hello@quantish.live</a></li>

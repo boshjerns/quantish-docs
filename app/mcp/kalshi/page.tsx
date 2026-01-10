@@ -4,7 +4,7 @@ const toolCategories = [
   {
     name: 'Authentication & Setup',
     tools: [
-      { name: 'kalshi_request_api_key', desc: 'Get API credentials (requires access code)' },
+      { name: 'kalshi_signup', desc: 'Create account and get API credentials (no access code needed)' },
       { name: 'kalshi_setup_wallet', desc: 'Generate new Solana wallet' },
       { name: 'kalshi_import_wallet', desc: 'Import existing wallet (Phantom, Solflare)' },
       { name: 'kalshi_get_wallet_info', desc: 'Get wallet public key and type' },
@@ -61,7 +61,7 @@ export default function KalshiMCP() {
           </div>
           <div>
             <h1 className="text-3xl font-bold uppercase tracking-tight">Kalshi MCP</h1>
-            <p className="text-[hsl(var(--muted-foreground))] font-mono text-sm">kalshi-mcp-server-production.up.railway.app</p>
+            <p className="text-[hsl(var(--muted-foreground))] font-mono text-sm">kalshi-mcp-production-7c2c.up.railway.app</p>
           </div>
         </div>
         <p className="text-gray-600">
@@ -70,23 +70,39 @@ export default function KalshiMCP() {
         </p>
       </div>
 
-      {/* Requirements */}
-      <div className="card mb-8 border-amber-200 bg-amber-50">
-        <h3 className="font-semibold text-amber-900 mb-2">⚠️ Requirements</h3>
-        <ul className="text-sm text-amber-800 space-y-1">
-          <li>• Access code required to generate API key</li>
+      {/* Key Info */}
+      <div className="card mb-8 border-green-200 bg-green-50">
+        <h3 className="font-semibold text-green-900 mb-2">✓ No Access Code Required</h3>
+        <ul className="text-sm text-green-800 space-y-1">
+          <li>• Generate API key instantly with <code className="bg-green-100 px-1 rounded">kalshi_signup</code></li>
           <li>• USDC on Solana for trading (wallet setup/import handled by the MCP)</li>
         </ul>
       </div>
 
       {/* Quick Setup */}
       <div className="card mb-8">
-        <h2 className="text-lg font-semibold mb-4">Quick Setup</h2>
+        <h2 className="text-lg font-semibold mb-4">Quick Setup (Cursor)</h2>
+        <p className="text-sm text-gray-600 mb-3">Add to <code className="bg-gray-100 px-1 rounded">~/.cursor/mcp.json</code>:</p>
         <pre className="p-4 bg-gray-900 text-gray-100 rounded-lg font-mono text-sm overflow-x-auto">
 {`{
   "mcpServers": {
     "quantish_kalshi": {
-      "url": "https://kalshi-mcp-server-production.up.railway.app/mcp",
+      "url": "https://kalshi-mcp-production-7c2c.up.railway.app/mcp",
+      "headers": {
+        "x-api-key": "YOUR_API_KEY"
+      }
+    }
+  }
+}`}
+        </pre>
+        <h3 className="text-md font-semibold mt-6 mb-3">Claude Code</h3>
+        <p className="text-sm text-gray-600 mb-3">Add to <code className="bg-gray-100 px-1 rounded">~/.claude/settings.json</code>:</p>
+        <pre className="p-4 bg-gray-900 text-gray-100 rounded-lg font-mono text-sm overflow-x-auto">
+{`{
+  "mcpServers": {
+    "quantish-kalshi": {
+      "type": "url",
+      "url": "https://kalshi-mcp-production-7c2c.up.railway.app/mcp",
       "headers": {
         "x-api-key": "YOUR_API_KEY"
       }

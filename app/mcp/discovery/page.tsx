@@ -76,11 +76,27 @@ export default function DiscoveryMCP() {
 
       {/* Quick Setup */}
       <div className="card mb-8">
-        <h2 className="text-lg font-bold mb-4 uppercase tracking-tight">MCP Configuration</h2>
+        <h2 className="text-lg font-bold mb-4 uppercase tracking-tight">MCP Configuration (Cursor)</h2>
+        <p className="text-sm text-[hsl(var(--muted-foreground))] mb-3">Add to <code className="bg-[hsl(var(--muted))] px-1 border border-[hsl(var(--border))]">~/.cursor/mcp.json</code>:</p>
         <pre className="p-4 bg-[hsl(0_0%_5%)] text-gray-100 font-mono text-sm overflow-x-auto border-2 border-[hsl(var(--border))] brutalist-shadow">
 {`{
   "mcpServers": {
     "quantish_discovery": {
+      "url": "https://quantish.live/mcp",
+      "headers": {
+        "X-API-Key": "YOUR_API_KEY"
+      }
+    }
+  }
+}`}
+        </pre>
+        <h3 className="text-md font-bold mt-6 mb-3 uppercase tracking-tight">Claude Code</h3>
+        <p className="text-sm text-[hsl(var(--muted-foreground))] mb-3">Add to <code className="bg-[hsl(var(--muted))] px-1 border border-[hsl(var(--border))]">~/.claude/settings.json</code>:</p>
+        <pre className="p-4 bg-[hsl(0_0%_5%)] text-gray-100 font-mono text-sm overflow-x-auto border-2 border-[hsl(var(--border))] brutalist-shadow">
+{`{
+  "mcpServers": {
+    "quantish-discovery": {
+      "type": "url",
       "url": "https://quantish.live/mcp",
       "headers": {
         "X-API-Key": "YOUR_API_KEY"
