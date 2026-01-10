@@ -17,14 +17,14 @@ export default function WalletSetupPage() {
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-3">How It Works</h3>
           <p className="text-gray-600 mb-4">
-            Polymarket uses a Polygon-based wallet system with a Safe (Gnosis Safe) smart contract wallet 
-            for secure, gasless transactions. Your wallet is derived from your Privy authentication.
+            Polymarket uses a Polygon-based wallet system with a Safe (Gnosis Safe) smart contract wallet
+            for secure, gasless transactions. The MCP server manages wallet creation and CLOB credentials.
           </p>
-          
+
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <p className="text-blue-800 text-sm">
-              <strong>Note:</strong> You don't need to create or manage a separate wallet. 
-              The MCP server handles wallet operations automatically after you authenticate via Privy.
+              <strong>Note:</strong> Use <code className="bg-blue-100 px-1 rounded">setup_wallet</code> to deploy your Safe wallet
+              and set up trading credentials. All transactions are gasless via Polymarket's relayer.
             </p>
           </div>
         </div>
@@ -34,17 +34,17 @@ export default function WalletSetupPage() {
           <ol className="list-decimal list-inside space-y-3 text-gray-600">
             <li>
               <strong>Get an API Key</strong> - Generate one from the{' '}
-              <a href="/get-started" className="text-blue-600 hover:underline">Get Started</a> page
+              <a href="/get-started" className="text-blue-600 hover:underline">Get Started</a> page (requires access code)
             </li>
             <li>
-              <strong>Use the <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">create_wallet</code> tool</strong> - 
-              This generates a new Polymarket-compatible wallet with a secure password
+              <strong>Use the <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">setup_wallet</code> tool</strong> -
+              This deploys your Safe wallet and sets up CLOB credentials for trading
             </li>
             <li>
-              <strong>Fund your wallet</strong> - Deposit USDC on Polygon to your wallet address
+              <strong>Fund your wallet</strong> - Deposit USDC on Polygon to your Safe address
             </li>
             <li>
-              <strong>Enable trading</strong> - The wallet is automatically approved for Polymarket trading
+              <strong>Start trading</strong> - Use <code className="bg-gray-100 px-1.5 py-0.5 rounded text-sm">place_order</code> to trade
             </li>
           </ol>
         </div>
@@ -53,20 +53,24 @@ export default function WalletSetupPage() {
           <h3 className="text-lg font-semibold text-gray-900 mb-3">Wallet Tools</h3>
           <div className="space-y-4">
             <div className="border-l-4 border-purple-500 pl-4">
-              <code className="text-purple-700 font-mono">create_wallet</code>
-              <p className="text-gray-600 text-sm mt-1">Generate a new trading wallet with encryption</p>
+              <code className="text-purple-700 font-mono">setup_wallet</code>
+              <p className="text-gray-600 text-sm mt-1">Deploy Safe wallet and set up CLOB credentials</p>
             </div>
             <div className="border-l-4 border-purple-500 pl-4">
-              <code className="text-purple-700 font-mono">get_wallet_address</code>
-              <p className="text-gray-600 text-sm mt-1">Get your current wallet's public address</p>
+              <code className="text-purple-700 font-mono">get_wallet_status</code>
+              <p className="text-gray-600 text-sm mt-1">Check wallet deployment and approval status</p>
             </div>
             <div className="border-l-4 border-purple-500 pl-4">
-              <code className="text-purple-700 font-mono">get_balance</code>
-              <p className="text-gray-600 text-sm mt-1">Check your USDC balance</p>
+              <code className="text-purple-700 font-mono">get_balances</code>
+              <p className="text-gray-600 text-sm mt-1">Check USDC, Native USDC, and MATIC balances</p>
             </div>
             <div className="border-l-4 border-purple-500 pl-4">
-              <code className="text-purple-700 font-mono">export_wallet</code>
-              <p className="text-gray-600 text-sm mt-1">Export wallet for backup (encrypted)</p>
+              <code className="text-purple-700 font-mono">get_deposit_addresses</code>
+              <p className="text-gray-600 text-sm mt-1">Get deposit addresses for funding your wallet</p>
+            </div>
+            <div className="border-l-4 border-purple-500 pl-4">
+              <code className="text-purple-700 font-mono">export_private_key</code>
+              <p className="text-gray-600 text-sm mt-1">Export wallet private key for backup</p>
             </div>
           </div>
         </div>
@@ -121,7 +125,7 @@ export default function WalletSetupPage() {
           <h3 className="text-lg font-semibold text-gray-900 mb-3">Kalshi Wallet Tools</h3>
           <div className="space-y-4">
             <div className="border-l-4 border-green-500 pl-4">
-              <code className="text-green-700 font-mono">kalshi_create_wallet</code>
+              <code className="text-green-700 font-mono">kalshi_setup_wallet</code>
               <p className="text-gray-600 text-sm mt-1">Generate a new Solana wallet for DFlow trading</p>
             </div>
             <div className="border-l-4 border-green-500 pl-4">
@@ -129,16 +133,16 @@ export default function WalletSetupPage() {
               <p className="text-gray-600 text-sm mt-1">Import an existing Phantom/Solana wallet</p>
             </div>
             <div className="border-l-4 border-green-500 pl-4">
-              <code className="text-green-700 font-mono">kalshi_get_wallet_address</code>
-              <p className="text-gray-600 text-sm mt-1">Get your Solana wallet's public address</p>
+              <code className="text-green-700 font-mono">kalshi_get_wallet_info</code>
+              <p className="text-gray-600 text-sm mt-1">Get your Solana wallet's public key and type</p>
             </div>
             <div className="border-l-4 border-green-500 pl-4">
-              <code className="text-green-700 font-mono">kalshi_get_balance</code>
+              <code className="text-green-700 font-mono">kalshi_get_balances</code>
               <p className="text-gray-600 text-sm mt-1">Check SOL and USDC balances</p>
             </div>
             <div className="border-l-4 border-green-500 pl-4">
-              <code className="text-green-700 font-mono">kalshi_export_wallet</code>
-              <p className="text-gray-600 text-sm mt-1">Export wallet bundle for backup</p>
+              <code className="text-green-700 font-mono">kalshi_export_private_key</code>
+              <p className="text-gray-600 text-sm mt-1">Export wallet private key for backup</p>
             </div>
           </div>
         </div>
