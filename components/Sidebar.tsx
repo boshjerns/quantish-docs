@@ -2,16 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  Home, 
-  Key, 
-  Zap, 
-  BookOpen, 
+import {
+  Home,
+  Key,
+  Zap,
+  BookOpen,
   Wallet,
   Search,
   TrendingUp,
   Settings,
-  ExternalLink
+  ExternalLink,
+  Terminal
 } from 'lucide-react';
 
 const navigation = [
@@ -36,7 +37,8 @@ const navigation = [
     items: [
       { name: 'Wallet Setup', href: '/guides/wallet', icon: Wallet },
       { name: 'Trading', href: '/guides/trading', icon: TrendingUp },
-      { name: 'Cursor Integration', href: '/guides/cursor', icon: Settings },
+      { name: 'Claude Code', href: '/guides/claude-code', icon: Terminal },
+      { name: 'Cursor', href: '/guides/cursor', icon: Settings },
     ],
   },
   {

@@ -32,7 +32,7 @@ export default function CursorIntegrationPage() {
             <li className="flex items-start gap-3">
               <span className="text-green-500 mt-0.5">✓</span>
               <span className="text-gray-600">
-                <strong>Claude model</strong> - Cursor uses Claude for MCP tool execution
+                <strong>MCP Support</strong> - Cursor 0.40+ with MCP enabled in settings
               </span>
             </li>
           </ul>
@@ -203,9 +203,9 @@ export default function CursorIntegrationPage() {
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h3 className="font-semibold text-gray-900 mb-2">Tools not executing</h3>
             <ul className="list-disc list-inside space-y-1 text-gray-600">
-              <li>Make sure you're using Claude model (not GPT)</li>
               <li>MCP tools only work in Agent mode, not regular chat</li>
               <li>Try being more explicit: "Use the search_markets tool to find..."</li>
+              <li>Make sure MCP is enabled in Cursor settings under Features</li>
             </ul>
           </div>
         </div>
