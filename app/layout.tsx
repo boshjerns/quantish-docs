@@ -4,7 +4,7 @@ import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 
 export const metadata: Metadata = {
-  title: 'Quantish Docs - API & MCP Documentation',
+  title: 'Quantish Docs - API & MCP Documentation (v20260111)',
   description: 'Documentation for Quantish prediction market APIs and MCP integrations for Polymarket, Kalshi, and Discovery services.',
   icons: {
     icon: '/favicon.ico',
