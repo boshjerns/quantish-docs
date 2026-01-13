@@ -74,33 +74,28 @@ export default function Home() {
 
     setIsGeneratingKey(true);
     try {
-      // Call the Discovery MCP to get an API key
-      const response = await fetch('https://quantish.live/mcp', {
+      // Use the local API route to generate key (avoids CORS)
+      const response = await fetch('/api/generate-discovery-key', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          jsonrpc: '2.0',
-          id: 1,
-          method: 'tools/call',
-          params: {
-            name: 'request_api_key',
-            arguments: { externalId: externalId.trim() }
-          }
+          email: externalId.trim(),
+          name: 'Docs Generated Key'
         })
       });
       const data = await response.json();
-      if (data.result?.content?.[0]?.text) {
-        const result = JSON.parse(data.result.content[0].text);
-        setApiKey(result.apiKey);
+
+      if (data.success && data.key) {
+        setApiKey(data.key);
         setCurrentStep(2);
       } else if (data.error) {
-        alert(data.error.message || 'Failed to generate API key');
+        alert(data.error || 'Failed to generate API key');
+      } else {
+        alert('Failed to generate API key. Please try again.');
       }
     } catch (error) {
       console.error('Error generating key:', error);
-      // For demo, generate a placeholder
-      setApiKey('qm_' + Math.random().toString(36).substring(2, 15));
-      setCurrentStep(2);
+      alert('Failed to connect to server. Please try again.');
     } finally {
       setIsGeneratingKey(false);
     }

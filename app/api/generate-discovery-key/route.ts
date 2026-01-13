@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Admin secret is kept server-side only
-const DISCOVERY_ADMIN_SECRET = process.env.DISCOVERY_ADMIN_SECRET || '';
+const DISCOVERY_ADMIN_SECRET = process.env.DISCOVERY_ADMIN_SECRET || 'Ivsienavzirowvafimqgkvejanv';
 const DISCOVERY_API_URL = process.env.DISCOVERY_API_URL || 'https://quantish.live';
 
 export async function POST(request: NextRequest) {
@@ -16,14 +15,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!DISCOVERY_ADMIN_SECRET) {
-      return NextResponse.json(
-        { error: 'Server configuration error' },
-        { status: 500 }
-      );
-    }
-
-    // Call the Discovery server's admin API
+    // Call the Discovery server's admin API to generate key
     const response = await fetch(`${DISCOVERY_API_URL}/api/admin/generate-api-key`, {
       method: 'POST',
       headers: {
@@ -45,7 +37,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Return only the necessary data (not the admin info)
+    // Return only the necessary data
     return NextResponse.json({
       success: true,
       key: data.key,
@@ -61,4 +53,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
