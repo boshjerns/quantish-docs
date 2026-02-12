@@ -39,6 +39,12 @@ export default function RootLayout({
                   >
                     Agent Docs
                   </Link>
+                  <Link
+                    href="/skills"
+                    className="px-3 py-1.5 text-sm font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] rounded-md hover:bg-[hsl(var(--muted))] transition-colors"
+                  >
+                    Skills
+                  </Link>
                 </nav>
               </div>
               <div className="flex items-center gap-3">
