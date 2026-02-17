@@ -3,13 +3,13 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Quantish Skills - Claude Code Skills for Prediction Markets',
-  description: 'Install prediction market trading skills for Claude Code. One command to set up Polymarket, Kalshi, and Discovery MCP servers.',
+  description: 'Install prediction market trading skills for Claude Code. One command to set up Polymarket, Kalshi, Limitless, and Discovery MCP servers.',
 };
 
 const InstallBlock = ({ label, command }: { label: string; command: string }) => (
   <div className="mb-3">
-    <span className="text-xs font-medium text-[hsl(var(--muted-foreground))] block mb-1">{label}</span>
-    <pre className="p-3 bg-zinc-900 text-green-400 rounded-lg text-xs font-mono overflow-x-auto">{command}</pre>
+    <span className="text-[10px] font-bold block mb-1 uppercase tracking-wider" style={{ color: 'var(--fg-dim)' }}>{label}</span>
+    <pre className="code-block">{command}</pre>
   </div>
 );
 
@@ -31,28 +31,28 @@ const SkillCard = ({
   <div className="card mb-6">
     <div className="flex items-start justify-between gap-4 mb-3">
       <div>
-        <h3 className="text-lg font-bold">{name}</h3>
-        <p className="text-sm text-[hsl(var(--muted-foreground))]">{description}</p>
+        <h3 className="text-sm font-bold" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{name}</h3>
+        <p className="text-xs" style={{ color: 'var(--fg-muted)' }}>{description}</p>
       </div>
-      <code className="text-xs bg-[hsl(var(--muted))] px-2 py-1 rounded shrink-0 font-mono">
+      <code className="text-xs shrink-0 px-2 py-1" style={{ color: 'var(--cyan)', background: 'var(--bg)', border: '1px solid var(--border)' }}>
         /{command}
       </code>
     </div>
     {prereq && (
-      <p className="text-xs text-amber-600 dark:text-amber-400 mb-3">
-        Requires: <code className="bg-[hsl(var(--muted))] px-1 py-0.5 rounded">/{prereq}</code>
+      <p className="text-xs mb-3" style={{ color: 'var(--yellow)' }}>
+        requires: <code>/{prereq}</code>
       </p>
     )}
-    <ul className="text-sm text-[hsl(var(--muted-foreground))] space-y-1 mb-4">
+    <ul className="text-xs space-y-1 mb-4" style={{ color: 'var(--fg-muted)' }}>
       {details.map((d, i) => (
         <li key={i} className="flex items-start gap-2">
-          <span className="text-[hsl(var(--primary))] mt-0.5">&bull;</span>
+          <span style={{ color: 'var(--cyan)' }}>&gt;</span>
           {d}
         </li>
       ))}
     </ul>
     <InstallBlock
-      label="Install"
+      label="install"
       command={`mkdir -p ~/.claude/skills/${command}\ncurl -o ~/.claude/skills/${command}/SKILL.md \\\n  ${installUrl}`}
     />
   </div>
@@ -65,39 +65,48 @@ export default function SkillsPage() {
     <div className="max-w-3xl">
       {/* Header */}
       <div className="mb-10">
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+        <div className="text-xs mb-3" style={{ color: 'var(--fg-dim)' }}>
+          {'>'} skills.list() :: claude_code_extensions
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
           Skills
         </h1>
-        <p className="text-base text-[hsl(var(--muted-foreground))]">
-          Claude Code skills for prediction market trading. Install a skill and run the slash command to get started.
+        <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>
+          Claude Code skills for prediction market trading.
+          <br />
+          <span style={{ color: 'var(--fg-dim)' }}>Install a skill, run the slash command.</span>
         </p>
       </div>
 
       {/* Quick install all */}
-      <div className="card mb-10 border-[hsl(var(--primary))] border-opacity-30">
-        <h2 className="text-lg font-bold mb-2">Quick install (all skills)</h2>
-        <p className="text-sm text-[hsl(var(--muted-foreground))] mb-4">
-          Clone the entire skills repo to get all three skills at once:
+      <div className="card mb-10" style={{ borderColor: 'var(--cyan-dim)' }}>
+        <h2 className="text-sm font-bold mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          <span style={{ color: 'var(--cyan)' }}>&gt;</span> Quick install (all skills)
+        </h2>
+        <p className="text-xs mb-4" style={{ color: 'var(--fg-muted)' }}>
+          Clone the entire skills repo to get all four at once:
         </p>
-        <pre className="p-4 bg-zinc-900 text-green-400 rounded-lg text-xs font-mono overflow-x-auto">
+        <pre className="code-block">
 {`git clone https://github.com/joinQuantish/skills.git ~/.claude/skills/quantish`}
         </pre>
-        <p className="text-xs text-[hsl(var(--muted-foreground))] mt-3">
-          Then restart Claude Code. Run <code className="bg-[hsl(var(--muted))] px-1 py-0.5 rounded">/quantish-mcp-setup</code> to connect to all servers.
+        <p className="text-xs mt-3" style={{ color: 'var(--fg-dim)' }}>
+          Restart Claude Code. Run <code style={{ color: 'var(--cyan)' }}>/quantish-mcp-setup</code> to connect to all servers.
         </p>
       </div>
 
       {/* Individual skills */}
-      <h2 className="text-xl font-bold mb-6">Available Skills</h2>
+      <h2 className="text-lg font-bold mb-6" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+        <span style={{ color: 'var(--cyan)' }}>## </span>Available Skills
+      </h2>
 
       <SkillCard
         name="Quantish MCP Setup"
         command="quantish-mcp-setup"
         description="One command to connect to all prediction market servers."
         details={[
-          'Generates API keys for Discovery, Polymarket, and Kalshi',
-          'Sets up 3 MCP servers via `claude mcp add`',
-          'Deploys Polymarket Safe wallet + Kalshi Solana wallet',
+          'Generates API keys for Discovery, Polymarket, Kalshi, and Limitless',
+          'Sets up 4 MCP servers via `claude mcp add`',
+          'Deploys Polymarket Safe wallet, Kalshi Solana wallet, and Limitless Base wallet',
           'Configures authentication headers automatically',
         ]}
         installUrl={`${ghRaw}/quantish-mcp-setup/SKILL.md`}
@@ -114,8 +123,9 @@ export default function SkillsPage() {
           'Order book inspection (best bid/ask spread)',
           'Order placement (GTC, FOK, FAK, GTD)',
           'Position management and P&L tracking',
+          'Copy trading and trader discovery',
           'Claiming winnings from resolved markets',
-          'Token merging (YES + NO → USDC)',
+          'Token merging (YES + NO -> USDC)',
         ]}
         installUrl={`${ghRaw}/polymarket-trading/SKILL.md`}
       />
@@ -127,7 +137,7 @@ export default function SkillsPage() {
         prereq="quantish-mcp-setup"
         details={[
           'Solana wallet management (generate or import)',
-          'Market search with Discovery → DFlow mapping',
+          'Market search with Discovery -> DFlow mapping',
           'Buy YES/NO outcome tokens',
           'Token holdings and position verification',
           'Redemption after market settlement',
@@ -137,33 +147,57 @@ export default function SkillsPage() {
         installUrl={`${ghRaw}/kalshi-trading/SKILL.md`}
       />
 
+      <SkillCard
+        name="Limitless Trading"
+        command="limitless-trading"
+        description="Trade prediction markets on Base chain via Limitless Exchange."
+        prereq="quantish-mcp-setup"
+        details={[
+          'Base wallet management and funding',
+          'CLOB limit orders on prediction markets',
+          'Multi-outcome and binary market trading',
+          'Position tracking and P&L monitoring',
+          'Token swaps and Base meme coin trading',
+          'Cross-chain bridging (Base to Polygon)',
+          'Winnings redemption after settlement',
+        ]}
+        installUrl={`${ghRaw}/limitless-trading/SKILL.md`}
+      />
+
       {/* What gets set up */}
       <div className="card mb-10">
-        <h2 className="text-lg font-bold mb-4">What gets set up</h2>
+        <h2 className="text-sm font-bold mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          <span style={{ color: 'var(--cyan)' }}>## </span>What gets set up
+        </h2>
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+          <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-[hsl(var(--border))]">
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">MCP Server</th>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">Platform</th>
-                <th className="py-2 text-xs font-semibold uppercase tracking-wider text-[hsl(var(--muted-foreground))]">What you can do</th>
+              <tr style={{ borderBottom: '1px solid var(--border-bright)' }}>
+                <th className="py-2 pr-4 text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--fg-dim)' }}>MCP Server</th>
+                <th className="py-2 pr-4 text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--fg-dim)' }}>Platform</th>
+                <th className="py-2 text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--fg-dim)' }}>What you can do</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-[hsl(var(--border))]">
-                <td className="py-2 pr-4 font-mono text-xs">quantish-discovery</td>
+              <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                <td className="py-2 pr-4" style={{ color: 'var(--cyan)' }}>quantish-discovery</td>
                 <td className="py-2 pr-4">All</td>
-                <td className="py-2 text-[hsl(var(--muted-foreground))]">Search 50k+ markets, get prices, find arbitrage</td>
+                <td className="py-2" style={{ color: 'var(--fg-muted)' }}>Search 50k+ markets, get prices, find arbitrage, related markets</td>
               </tr>
-              <tr className="border-b border-[hsl(var(--border))]">
-                <td className="py-2 pr-4 font-mono text-xs">quantish</td>
+              <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                <td className="py-2 pr-4" style={{ color: 'var(--cyan)' }}>quantish-polymarket</td>
                 <td className="py-2 pr-4">Polymarket</td>
-                <td className="py-2 text-[hsl(var(--muted-foreground))]">Place trades, manage positions, transfer funds</td>
+                <td className="py-2" style={{ color: 'var(--fg-muted)' }}>Place trades, manage positions, copy trading, bridge funds</td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                <td className="py-2 pr-4" style={{ color: 'var(--cyan)' }}>quantish-kalshi</td>
+                <td className="py-2 pr-4">Kalshi</td>
+                <td className="py-2" style={{ color: 'var(--fg-muted)' }}>Trade US-regulated markets via Solana/DFlow</td>
               </tr>
               <tr>
-                <td className="py-2 pr-4 font-mono text-xs">quantish-kalshi</td>
-                <td className="py-2 pr-4">Kalshi</td>
-                <td className="py-2 text-[hsl(var(--muted-foreground))]">Trade US-regulated markets via Solana/DFlow</td>
+                <td className="py-2 pr-4" style={{ color: 'var(--cyan)' }}>quantish-limitless</td>
+                <td className="py-2 pr-4">Limitless</td>
+                <td className="py-2" style={{ color: 'var(--fg-muted)' }}>Trade Base chain markets, token swaps, cross-chain bridges</td>
               </tr>
             </tbody>
           </table>
@@ -172,12 +206,16 @@ export default function SkillsPage() {
 
       {/* Example commands */}
       <div className="card mb-10">
-        <h2 className="text-lg font-bold mb-4">Example commands (after setup)</h2>
-        <pre className="p-4 bg-zinc-900 text-green-400 rounded-lg text-xs font-mono overflow-x-auto">
+        <h2 className="text-sm font-bold mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          <span style={{ color: 'var(--cyan)' }}>## </span>Example commands
+        </h2>
+        <pre className="code-block">
 {`"Search for government shutdown markets"
 "Show my Polymarket balance"
 "Buy $2 of YES on the Fed Chair market"
 "Show my Kalshi positions"
+"Search Limitless markets for crypto events"
+"Copy trade the top Polymarket whale"
 "Claim my winnings from resolved markets"`}
         </pre>
       </div>
@@ -188,21 +226,15 @@ export default function SkillsPage() {
           href="https://github.com/joinQuantish/skills"
           target="_blank"
           rel="noopener noreferrer"
-          className="px-4 py-2 text-sm font-medium border border-[hsl(var(--border))] rounded-lg hover:bg-[hsl(var(--muted))] transition-colors"
+          className="btn-ghost"
         >
-          View on GitHub &rarr;
+          [GITHUB] &rarr;
         </a>
-        <Link
-          href="/agent"
-          className="px-4 py-2 text-sm font-medium border border-[hsl(var(--border))] rounded-lg hover:bg-[hsl(var(--muted))] transition-colors"
-        >
-          Agent Docs
+        <Link href="/agent" className="btn-ghost">
+          [AGENT DOCS]
         </Link>
-        <Link
-          href="/"
-          className="px-4 py-2 text-sm font-medium border border-[hsl(var(--border))] rounded-lg hover:bg-[hsl(var(--muted))] transition-colors"
-        >
-          Get API Keys
+        <Link href="/" className="btn-ghost">
+          [GET API KEYS]
         </Link>
       </div>
     </div>

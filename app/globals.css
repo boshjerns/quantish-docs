@@ -1,58 +1,242 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 0 0% 5%;
-  --card: 0 0% 99%;
-  --card-foreground: 0 0% 5%;
-  --primary: 260 80% 55%;
-  --primary-foreground: 0 0% 100%;
-  --muted: 240 5% 96%;
-  --muted-foreground: 240 4% 46%;
-  --border: 240 6% 90%;
-  --accent: 260 80% 55%;
-}
-
-.dark {
-  --background: 240 10% 6%;
-  --foreground: 0 0% 93%;
-  --card: 240 10% 9%;
-  --card-foreground: 0 0% 93%;
-  --primary: 260 80% 65%;
-  --primary-foreground: 0 0% 100%;
-  --muted: 240 6% 15%;
-  --muted-foreground: 240 5% 55%;
-  --border: 240 5% 20%;
-  --accent: 260 80% 65%;
+  --bg: #0a0a0f;
+  --bg-card: #0f0f18;
+  --bg-elevated: #14141f;
+  --fg: #e0e0e8;
+  --fg-muted: #6b6b80;
+  --fg-dim: #44445a;
+  --cyan: #00f0ff;
+  --cyan-dim: #00a0aa;
+  --green: #00ff88;
+  --green-dim: #00aa5c;
+  --purple: #8b5cf6;
+  --red: #ff3366;
+  --yellow: #ffd700;
+  --border: #1a1a2e;
+  --border-bright: #2a2a44;
 }
 
 @layer base {
   * {
-    border-color: hsl(var(--border));
+    border-color: var(--border);
   }
 
   body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+    font-family: 'JetBrains Mono', monospace;
+    background-color: var(--bg);
+    color: var(--fg);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 13px;
+    line-height: 1.6;
   }
 
-  code, pre {
-    font-family: 'JetBrains Mono', monospace;
+  ::selection {
+    background: var(--cyan);
+    color: var(--bg);
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-bright);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--fg-dim);
   }
 }
 
 @layer components {
   .card {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
-    border-radius: 12px;
-    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+    transition: border-color 0.15s;
   }
+
+  .card:hover {
+    border-color: var(--border-bright);
+  }
+
+  .glow-cyan {
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5), 0 0 30px rgba(0, 240, 255, 0.2);
+  }
+
+  .glow-green {
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5), 0 0 30px rgba(0, 255, 136, 0.2);
+  }
+
+  .border-glow {
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.1), inset 0 0 15px rgba(0, 240, 255, 0.03);
+  }
+
+  .scanlines {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scanlines::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+    pointer-events: none;
+  }
+
+  .ascii-border {
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  .ascii-border::before {
+    content: '+';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    color: var(--fg-dim);
+    font-size: 10px;
+    line-height: 1;
+  }
+
+  .ascii-border::after {
+    content: '+';
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    color: var(--fg-dim);
+    font-size: 10px;
+    line-height: 1;
+  }
+
+  .btn-primary {
+    background: transparent;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    padding: 0.5rem 1.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: var(--cyan);
+    color: var(--bg);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--fg-muted);
+    padding: 0.5rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--border-bright);
+    color: var(--fg);
+  }
+
+  .input-dark {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    padding: 0.625rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .input-dark:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+  }
+
+  .input-dark::placeholder {
+    color: var(--fg-dim);
+  }
+
+  .code-block {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--green);
+    padding: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1px solid;
+  }
+
+  .tag-free {
+    color: var(--green);
+    border-color: var(--green-dim);
+  }
+
+  .tag-cyan {
+    color: var(--cyan);
+    border-color: var(--cyan-dim);
+  }
+}
+
+/* Subtle grid background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: -1;
 }

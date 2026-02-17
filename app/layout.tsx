@@ -17,54 +17,64 @@ export default function RootLayout({
       <body>
         <div className="min-h-screen flex flex-col">
           {/* Header */}
-          <header className="border-b border-[hsl(var(--border))] bg-[hsl(var(--background))]">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-              <div className="flex items-center gap-6">
-                <Link href="/" className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">Q</span>
-                  </div>
-                  <span className="font-bold text-lg tracking-tight">Quantish</span>
+          <header className="border-b" style={{ borderColor: 'var(--border)' }}>
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
+              {/* ASCII Logo */}
+              <div className="mb-3">
+                <Link href="/" className="block">
+                  <pre className="text-[10px] sm:text-xs leading-tight glow-cyan select-none" style={{ color: 'var(--cyan)' }}>
+{`   ____                   _   _     _
+  / __ \\                 | | (_)   | |
+ | |  | |_   _  __ _ _ __| |_ _ ___| |__
+ | |  | | | | |/ _\` | '_ \\  _| / __| '_ \\
+ | |__| | |_| | (_| | | | | | | \\__ \\ | | |
+  \\___\\_\\\\__,_|\\__,_|_| |_|_| |_|___/_| |_|`}
+                  </pre>
                 </Link>
-                <nav className="flex items-center gap-1">
-                  <Link
-                    href="/"
-                    className="px-3 py-1.5 text-sm font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] rounded-md hover:bg-[hsl(var(--muted))] transition-colors"
-                  >
-                    Get Keys
-                  </Link>
-                  <Link
-                    href="/agent"
-                    className="px-3 py-1.5 text-sm font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] rounded-md hover:bg-[hsl(var(--muted))] transition-colors"
-                  >
-                    Agent Docs
-                  </Link>
-                  <Link
-                    href="/skills"
-                    className="px-3 py-1.5 text-sm font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] rounded-md hover:bg-[hsl(var(--muted))] transition-colors"
-                  >
-                    Skills
-                  </Link>
-                </nav>
+                <div className="text-[10px] sm:text-xs mt-1" style={{ color: 'var(--fg-dim)' }}>
+                  {'// AI prediction market infrastructure'}
+                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <a
-                  href="https://github.com/joinQuantish"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors hidden sm:block"
-                >
-                  GitHub
-                </a>
-                <a
-                  href="https://quantish.live"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors hidden sm:block"
-                >
-                  quantish.live
-                </a>
-              </div>
+
+              {/* Nav */}
+              <nav className="flex items-center justify-between">
+                <div className="flex items-center gap-1">
+                  {[
+                    { href: '/', label: 'get_keys' },
+                    { href: '/agent', label: 'agent_docs' },
+                    { href: '/skills', label: 'skills' },
+                  ].map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="px-3 py-1.5 text-xs transition-colors hover:bg-[var(--bg-elevated)]"
+                      style={{ color: 'var(--fg-muted)' }}
+                    >
+                      [{item.label}]
+                    </Link>
+                  ))}
+                </div>
+                <div className="flex items-center gap-3">
+                  <a
+                    href="https://github.com/joinQuantish"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs transition-colors hover:opacity-80 hidden sm:block"
+                    style={{ color: 'var(--fg-dim)' }}
+                  >
+                    github
+                  </a>
+                  <a
+                    href="https://quantish.live"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs transition-colors hidden sm:block"
+                    style={{ color: 'var(--cyan-dim)' }}
+                  >
+                    quantish.live
+                  </a>
+                </div>
+              </nav>
             </div>
           </header>
 
@@ -76,14 +86,24 @@ export default function RootLayout({
           </main>
 
           {/* Footer */}
-          <footer className="border-t border-[hsl(var(--border))] py-6">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between text-sm text-[hsl(var(--muted-foreground))]">
-              <span>&copy; 2026 Quantish</span>
+          <footer className="border-t py-6" style={{ borderColor: 'var(--border)' }}>
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between text-xs" style={{ color: 'var(--fg-dim)' }}>
+              <span>&copy; 2026 quantish</span>
               <div className="flex items-center gap-4">
-                <a href="https://x.com/quantishlive" target="_blank" rel="noopener noreferrer" className="hover:text-[hsl(var(--foreground))] transition-colors">
-                  @quantishlive
+                <a
+                  href="https://x.com/joinQuantish"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors"
+                  style={{ color: 'var(--fg-dim)' }}
+                >
+                  @joinQuantish
                 </a>
-                <a href="mailto:josh@quantish.live" className="hover:text-[hsl(var(--foreground))] transition-colors">
+                <a
+                  href="mailto:josh@quantish.live"
+                  className="transition-colors"
+                  style={{ color: 'var(--fg-dim)' }}
+                >
                   josh@quantish.live
                 </a>
               </div>

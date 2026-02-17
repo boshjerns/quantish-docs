@@ -5,25 +5,28 @@ import Link from 'next/link';
 
 const MCP_SERVERS = {
   discovery: {
-    name: 'Discovery',
+    name: 'DISCOVERY',
     description: 'Search & discover markets across all platforms',
     url: 'https://quantish.live/mcp',
-    badge: 'Free',
-    badgeColor: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
+    tag: 'read-only',
   },
   polymarket: {
-    name: 'Polymarket',
+    name: 'POLYMARKET',
     description: 'Trade on the world\'s largest prediction market',
     url: 'https://quantish-sdk-production.up.railway.app/mcp',
-    badge: 'Free',
-    badgeColor: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
+    tag: 'polygon',
   },
   kalshi: {
-    name: 'Kalshi',
+    name: 'KALSHI',
     description: 'CFTC-regulated prediction markets on Solana',
     url: 'https://kalshi-mcp-production-7c2c.up.railway.app/mcp',
-    badge: 'Free',
-    badgeColor: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
+    tag: 'solana',
+  },
+  limitless: {
+    name: 'LIMITLESS',
+    description: 'Trade prediction markets on Base chain',
+    url: 'https://limitless-mcp-server-production.up.railway.app/mcp',
+    tag: 'base',
   },
 };
 
@@ -123,9 +126,36 @@ export default function Home() {
     }
   };
 
+  const generateLimitlessKey = async () => {
+    setIsLoading(prev => ({ ...prev, limitless: true }));
+    setErrors(prev => ({ ...prev, limitless: '' }));
+    try {
+      const response = await fetch(MCP_SERVERS.limitless.url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0', id: 1,
+          method: 'tools/call',
+          params: { name: 'limitless_signup', arguments: { externalId: externalId.trim() } }
+        })
+      });
+      const data = await response.json();
+      const result = data.result?.content?.[0]?.text ? JSON.parse(data.result.content[0].text) : null;
+      if (result?.apiKey) {
+        setKeys(prev => ({ ...prev, limitless: { apiKey: result.apiKey, apiSecret: result.apiSecret, address: result.walletAddress } }));
+      } else {
+        setErrors(prev => ({ ...prev, limitless: result?.error || 'Failed to generate key' }));
+      }
+    } catch {
+      setErrors(prev => ({ ...prev, limitless: 'Network error. Try again.' }));
+    } finally {
+      setIsLoading(prev => ({ ...prev, limitless: false }));
+    }
+  };
+
   const generateAllKeys = async () => {
     if (!externalId.trim()) return;
-    await Promise.all([generateDiscoveryKey(), generatePolymarketKey(), generateKalshiKey()]);
+    await Promise.all([generateDiscoveryKey(), generatePolymarketKey(), generateKalshiKey(), generateLimitlessKey()]);
   };
 
   const hasAnyKey = Object.keys(keys).length > 0;
@@ -141,6 +171,9 @@ export default function Home() {
     if (keys.kalshi) {
       config['quantish-kalshi'] = { url: MCP_SERVERS.kalshi.url, headers: { 'x-api-key': keys.kalshi.apiKey } };
     }
+    if (keys.limitless) {
+      config['quantish-limitless'] = { url: MCP_SERVERS.limitless.url, headers: { 'x-api-key': keys.limitless.apiKey } };
+    }
     return JSON.stringify({ mcpServers: config }, null, 2);
   };
 
@@ -155,98 +188,119 @@ export default function Home() {
     if (keys.kalshi) {
       config['quantish-kalshi'] = { command: 'npx', args: ['-y', 'mcp-remote', MCP_SERVERS.kalshi.url], env: { MCP_API_KEY: keys.kalshi.apiKey } };
     }
+    if (keys.limitless) {
+      config['quantish-limitless'] = { command: 'npx', args: ['-y', 'mcp-remote', MCP_SERVERS.limitless.url], env: { MCP_API_KEY: keys.limitless.apiKey } };
+    }
     return JSON.stringify({ mcpServers: config }, null, 2);
+  };
+
+  const keyGenFn: Record<string, () => Promise<void>> = {
+    discovery: generateDiscoveryKey,
+    polymarket: generatePolymarketKey,
+    kalshi: generateKalshiKey,
+    limitless: generateLimitlessKey,
   };
 
   return (
     <div>
       {/* Hero */}
-      <div className="text-center mb-10">
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+      <div className="mb-10">
+        <div className="text-xs mb-4" style={{ color: 'var(--fg-dim)' }}>
+          {'>'} system.init() :: api_key_generator v2.0
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
           Get your API keys
         </h1>
-        <p className="text-base text-[hsl(var(--muted-foreground))] max-w-lg mx-auto">
-          Connect to Quantish MCP servers and trade prediction markets with AI. Set up in 2 minutes.
+        <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>
+          Connect to Quantish MCP servers. Trade prediction markets with AI.
+          <br />
+          <span style={{ color: 'var(--fg-dim)' }}>Setup time: ~2 minutes</span>
         </p>
       </div>
 
       {/* Email Input */}
-      <div className="max-w-xl mx-auto mb-8">
-        <label className="block text-sm font-medium mb-2">Your email or unique ID</label>
+      <div className="max-w-2xl mb-8">
+        <label className="block text-xs mb-2" style={{ color: 'var(--fg-muted)' }}>
+          $ enter_id <span style={{ color: 'var(--fg-dim)' }}>// email or unique identifier</span>
+        </label>
         <div className="flex gap-3">
           <input
             type="text"
             placeholder="you@example.com"
             value={externalId}
             onChange={(e) => setExternalId(e.target.value)}
-            className="flex-1 px-4 py-2.5 bg-[hsl(var(--background))] border border-[hsl(var(--border))] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))] focus:border-transparent"
+            className="flex-1 input-dark"
           />
           <button
             onClick={generateAllKeys}
             disabled={!externalId.trim() || Object.values(isLoading).some(v => v)}
-            className="px-5 py-2.5 bg-[hsl(var(--primary))] text-white rounded-lg text-sm font-semibold disabled:opacity-50 hover:opacity-90 transition-opacity whitespace-nowrap"
+            className="btn-primary whitespace-nowrap"
           >
-            {Object.values(isLoading).some(v => v) ? 'Generating...' : 'Get All Keys'}
+            {Object.values(isLoading).some(v => v) ? '[ ... ]' : '[ GET ALL KEYS ]'}
           </button>
         </div>
       </div>
 
       {/* Server Cards */}
-      <div className="max-w-xl mx-auto space-y-3 mb-10">
+      <div className="max-w-2xl space-y-3 mb-10">
         {Object.entries(MCP_SERVERS).map(([id, server]) => {
           const key = keys[id];
           const error = errors[id];
           const loading = isLoading[id];
 
           return (
-            <div key={id} className={`card ${key ? 'border-green-300 dark:border-green-700' : ''}`}>
+            <div
+              key={id}
+              className="card"
+              style={key ? { borderColor: 'var(--green-dim)' } : undefined}
+            >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-semibold">{server.name}</h3>
-                    <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${server.badgeColor}`}>
-                      {server.badge}
-                    </span>
+                    <h3 className="font-bold text-sm" style={{ color: key ? 'var(--green)' : 'var(--fg)' }}>
+                      {server.name}
+                    </h3>
+                    <span className="tag tag-free">free</span>
+                    <span className="tag tag-cyan">{server.tag}</span>
                   </div>
-                  <p className="text-sm text-[hsl(var(--muted-foreground))]">{server.description}</p>
+                  <p className="text-xs" style={{ color: 'var(--fg-muted)' }}>{server.description}</p>
                 </div>
                 {key ? (
-                  <span className="text-green-600 dark:text-green-400 text-sm font-medium shrink-0 mt-0.5">
-                    &#10003; Ready
+                  <span className="text-xs font-bold shrink-0 mt-0.5" style={{ color: 'var(--green)' }}>
+                    [READY]
                   </span>
                 ) : (
                   <button
                     onClick={() => {
                       if (!externalId.trim()) return;
-                      if (id === 'discovery') generateDiscoveryKey();
-                      else if (id === 'polymarket') generatePolymarketKey();
-                      else generateKalshiKey();
+                      keyGenFn[id]?.();
                     }}
                     disabled={loading || !externalId.trim()}
-                    className="px-3 py-1.5 text-sm font-medium border border-[hsl(var(--border))] rounded-lg hover:bg-[hsl(var(--muted))] disabled:opacity-50 transition-colors shrink-0"
+                    className="btn-ghost shrink-0"
                   >
-                    {loading ? '...' : 'Get Key'}
+                    {loading ? '[...]' : '[GET KEY]'}
                   </button>
                 )}
               </div>
 
               {/* Show key */}
               {key && (
-                <div className="mt-3 p-3 bg-[hsl(var(--muted))] rounded-lg">
+                <div className="mt-3 p-3" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
                   <div className="flex items-center justify-between gap-2">
-                    <code className="text-xs font-mono truncate text-green-700 dark:text-green-400">
+                    <code className="text-xs truncate" style={{ color: 'var(--green)' }}>
                       {key.apiKey}
                     </code>
                     <button
                       onClick={() => copyToClipboard(key.apiKey, `key-${id}`)}
-                      className="text-xs text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] shrink-0"
+                      className="text-xs shrink-0 transition-colors"
+                      style={{ color: copiedItem === `key-${id}` ? 'var(--green)' : 'var(--fg-dim)' }}
                     >
-                      {copiedItem === `key-${id}` ? 'Copied!' : 'Copy'}
+                      {copiedItem === `key-${id}` ? '[COPIED]' : '[COPY]'}
                     </button>
                   </div>
                   {key.address && (
-                    <div className="mt-1.5 text-xs text-[hsl(var(--muted-foreground))] truncate">
-                      Wallet: {key.address}
+                    <div className="mt-1.5 text-xs truncate" style={{ color: 'var(--fg-dim)' }}>
+                      wallet: {key.address}
                     </div>
                   )}
                 </div>
@@ -254,7 +308,9 @@ export default function Home() {
 
               {/* Show error */}
               {error && (
-                <div className="mt-3 text-sm text-red-600 dark:text-red-400">{error}</div>
+                <div className="mt-3 text-xs" style={{ color: 'var(--red)' }}>
+                  ERROR: {error}
+                </div>
               )}
             </div>
           );
@@ -263,50 +319,45 @@ export default function Home() {
 
       {/* Config Output */}
       {hasAnyKey && (
-        <div className="max-w-xl mx-auto mb-10">
-          <h2 className="text-lg font-bold mb-4">Connect to your IDE</h2>
+        <div className="max-w-2xl mb-10">
+          <h2 className="text-sm font-bold mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            Connect to your IDE
+          </h2>
           <div className="flex gap-2 mb-4">
             <button
               onClick={() => setShowConfig(showConfig === 'cursor' ? null : 'cursor')}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                showConfig === 'cursor'
-                  ? 'bg-[hsl(var(--primary))] text-white'
-                  : 'border border-[hsl(var(--border))] hover:bg-[hsl(var(--muted))]'
-              }`}
+              className={showConfig === 'cursor' ? 'btn-primary' : 'btn-ghost'}
             >
-              Cursor / Windsurf
+              CURSOR / WINDSURF
             </button>
             <button
               onClick={() => setShowConfig(showConfig === 'claude' ? null : 'claude')}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                showConfig === 'claude'
-                  ? 'bg-[hsl(var(--primary))] text-white'
-                  : 'border border-[hsl(var(--border))] hover:bg-[hsl(var(--muted))]'
-              }`}
+              className={showConfig === 'claude' ? 'btn-primary' : 'btn-ghost'}
             >
-              Claude Desktop
+              CLAUDE DESKTOP
             </button>
           </div>
 
           {showConfig && (
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-[hsl(var(--muted-foreground))]">
+                <span className="text-xs" style={{ color: 'var(--fg-dim)' }}>
                   {showConfig === 'cursor' ? '~/.cursor/mcp.json' : '~/Library/Application Support/Claude/claude_desktop_config.json'}
                 </span>
                 <button
                   onClick={() => copyToClipboard(showConfig === 'cursor' ? getCursorConfig() : getClaudeConfig(), 'config')}
-                  className="text-xs font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]"
+                  className="text-xs transition-colors"
+                  style={{ color: copiedItem === 'config' ? 'var(--green)' : 'var(--fg-dim)' }}
                 >
-                  {copiedItem === 'config' ? 'Copied!' : 'Copy'}
+                  {copiedItem === 'config' ? '[COPIED]' : '[COPY]'}
                 </button>
               </div>
-              <pre className="p-4 bg-zinc-900 text-green-400 rounded-lg text-xs font-mono overflow-x-auto">
+              <pre className="code-block">
                 {showConfig === 'cursor' ? getCursorConfig() : getClaudeConfig()}
               </pre>
               {showConfig === 'claude' && (
-                <p className="text-xs text-[hsl(var(--muted-foreground))] mt-2">
-                  Requires <code className="bg-[hsl(var(--muted))] px-1 py-0.5 rounded">npx</code> (Node.js) installed. Paste into config file and restart Claude Desktop.
+                <p className="text-xs mt-2" style={{ color: 'var(--fg-dim)' }}>
+                  Requires <code style={{ color: 'var(--fg-muted)' }}>npx</code> (Node.js). Paste into config and restart Claude Desktop.
                 </p>
               )}
             </div>
@@ -315,13 +366,13 @@ export default function Home() {
       )}
 
       {/* Agent docs link */}
-      <div className="max-w-xl mx-auto text-center">
-        <div className="card bg-[hsl(var(--muted))]">
-          <p className="text-sm text-[hsl(var(--muted-foreground))] mb-2">
+      <div className="max-w-2xl">
+        <div className="card" style={{ borderColor: 'var(--border-bright)' }}>
+          <p className="text-xs mb-2" style={{ color: 'var(--fg-muted)' }}>
             Building an AI agent? See the full platform reference.
           </p>
-          <Link href="/agent" className="text-sm font-semibold text-[hsl(var(--primary))] hover:underline">
-            Agent Documentation &rarr;
+          <Link href="/agent" className="text-xs font-bold" style={{ color: 'var(--cyan)' }}>
+            {'>'} agent_documentation --full &rarr;
           </Link>
         </div>
       </div>
