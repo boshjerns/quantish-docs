@@ -686,78 +686,22 @@ Body:
       <Section id="specialty-endpoints" title="Specialty Endpoints">
         <p className="text-xs mb-4" style={{ color: 'var(--fg-muted)' }}>
           Public REST API endpoints on quantish.live. No authentication required. Rate-limited by IP.
-          Designed for AI agents and builders who want recommendation data without MCP.
+          All wallet endpoints include Polymarket identity (username, X handle, rank, profile image) when available.
         </p>
 
+        <p className="text-xs mb-6" style={{ color: 'var(--fg-dim)' }}>
+          8 endpoints &middot; Vector embeddings on 60K+ markets &middot; Identity + PNL enrichment on all wallet data
+        </p>
+
+        {/* --- Wallet Interests --- */}
         <div className="card mb-6">
           <h3 className="font-bold text-sm mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-            Related Markets
-          </h3>
-          <Code>{`GET https://quantish.live/api/markets/related?markets=slug1,slug2&platform=all&limit=20`}</Code>
-          <p className="text-xs mb-3" style={{ color: 'var(--fg-muted)' }}>
-            Find semantically related prediction markets across all platforms using vector embeddings. Pass slugs, conditionIds, or event tickers.
-          </p>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead>
-                <tr style={{ borderBottom: '1px solid var(--border-bright)' }}>
-                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Param</th>
-                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Required</th>
-                  <th className="py-1" style={{ color: 'var(--fg-dim)' }}>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>markets</td>
-                  <td className="py-1 pr-4" style={{ color: 'var(--yellow)' }}>yes</td>
-                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>Comma-separated slugs, conditionIds, or eventTickers (max 10)</td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>platform</td>
-                  <td className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>no</td>
-                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>&quot;polymarket&quot;, &quot;kalshi&quot;, &quot;limitless&quot;, or &quot;all&quot; (default)</td>
-                </tr>
-                <tr>
-                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>limit</td>
-                  <td className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>no</td>
-                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>1-50 (default 20)</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <Code>{`// Response
-{
-  "results": [{
-    "id": "...",
-    "platform": "polymarket",
-    "title": "Will Bitcoin reach $150k by June?",
-    "relevanceScore": 0.87,
-    "volume": 245000,
-    "endDate": "2026-06-30",
-    "category": "Crypto",
-    "slug": "will-bitcoin-reach-150k",
-    "url": "https://polymarket.com/event/...",
-    "image": "https://..."
-  }],
-  "count": 20,
-  "meta": {
-    "algorithm": "centroid_embedding",
-    "searchTimeMs": 142,
-    "inputMarkets": 2
-  }
-}`}</Code>
-          <p className="text-xs" style={{ color: 'var(--fg-dim)' }}>
-            Rate limit: 30 requests/min per IP
-          </p>
-        </div>
-
-        <div className="card">
-          <h3 className="font-bold text-sm mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-            Wallet Interests
+            <span style={{ color: 'var(--green)' }}>wallet_interests</span> &mdash; Predict What a Wallet Will Trade Next
           </h3>
           <Code>{`GET https://quantish.live/api/markets/interests?wallet=0x...&platform=all&limit=20&recency=30`}</Code>
           <p className="text-xs mb-3" style={{ color: 'var(--fg-muted)' }}>
-            Analyze a Polymarket wallet&apos;s trading history and recommend related markets they haven&apos;t traded yet.
+            Build a weighted interest centroid from a wallet&apos;s trading history (volume, recency, frequency),
+            then search 60K+ market embeddings to predict markets they&apos;ll trade next. Cross-platform results.
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
@@ -792,34 +736,423 @@ Body:
               </tbody>
             </table>
           </div>
-          <Code>{`// Response
+          <Code>{`// Response includes identity + predicted markets with relevance scores
 {
+  "identity": { "userName": "swisstony", "rank": 15, "xUsername": null },
   "results": [{
-    "id": "...",
-    "platform": "kalshi",
-    "title": "Fed rate cut in March?",
-    "relevanceScore": 0.82,
-    "volume": 180000,
-    "endDate": "2026-03-20",
-    "category": "Economics",
-    "slug": "FED-26MAR-T4.375",
-    "url": "https://kalshi.com/markets/..."
+    "title": "Will Bitcoin hit $150K by July?",
+    "relevanceScore": 0.94,
+    "platform": "polymarket",
+    "category": "Crypto",
+    "volume": 245000,
+    "url": "https://polymarket.com/event/..."
   }],
-  "count": 20,
   "profile": {
     "tradesAnalyzed": 47,
     "distinctMarkets": 12,
-    "topCategories": ["Crypto", "Economics", "Politics"],
-    "tradingPeriod": "28 days"
-  },
-  "meta": {
-    "algorithm": "weighted_interest_centroid",
-    "searchTimeMs": 380
+    "topCategories": ["Crypto", "Sports", "Politics"]
   }
 }`}</Code>
-          <p className="text-xs" style={{ color: 'var(--fg-dim)' }}>
-            Rate limit: 10 requests/min per IP
+          <p className="text-xs" style={{ color: 'var(--fg-dim)' }}>Rate limit: 10 req/min</p>
+        </div>
+
+        {/* --- Social Discovery --- */}
+        <div className="card mb-6">
+          <h3 className="font-bold text-sm mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span style={{ color: 'var(--green)' }}>social_discovery</span> &mdash; Similar Wallets + Collaborative Recommendations
+          </h3>
+          <Code>{`GET https://quantish.live/api/markets/social?wallet=0x...&limit=20`}</Code>
+          <p className="text-xs mb-3" style={{ color: 'var(--fg-muted)' }}>
+            Find wallets with similar trading patterns (collaborative filtering), then surface markets those
+            similar wallets trade that the target wallet hasn&apos;t. Each similar wallet includes PNL, volume, and ROI.
           </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--border-bright)' }}>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Param</th>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Required</th>
+                  <th className="py-1" style={{ color: 'var(--fg-dim)' }}>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>wallet</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--yellow)' }}>yes</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>Ethereum address (0x...)</td>
+                </tr>
+                <tr>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>limit</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>no</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>1-50 (default 20)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Code>{`// Response
+{
+  "identity": { "userName": "swisstony", "rank": 15 },
+  "similarWallets": [{
+    "wallet": "0x...",
+    "identity": { "userName": "paas2", "rank": 8 },
+    "overlap": 0.73,
+    "pnl": 2100000,
+    "volume": 8500000,
+    "roi": 24.7
+  }],
+  "results": [{
+    "title": "NBA Finals winner 2026",
+    "socialScore": 0.91,
+    "tradedByWallets": 4,
+    "category": "Sports"
+  }]
+}`}</Code>
+          <p className="text-xs" style={{ color: 'var(--fg-dim)' }}>Rate limit: 5 req/min</p>
+        </div>
+
+        {/* --- Wallet Profile --- */}
+        <div className="card mb-6">
+          <h3 className="font-bold text-sm mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span style={{ color: 'var(--green)' }}>wallet_profile</span> &mdash; PNL by Category, ROI, Win Rate
+          </h3>
+          <Code>{`GET https://quantish.live/api/markets/profile?wallet=0x...`}</Code>
+          <p className="text-xs mb-3" style={{ color: 'var(--fg-muted)' }}>
+            Full wallet analytics: PNL broken down by category (Sports, Crypto, Politics, etc.),
+            win/loss ratio, ROI, best/worst positions, trading frequency, and interest clusters.
+            Goes beyond Polymarket&apos;s API by adding category inference from 160+ tag mappings.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--border-bright)' }}>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Param</th>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Required</th>
+                  <th className="py-1" style={{ color: 'var(--fg-dim)' }}>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>wallet</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--yellow)' }}>yes</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>Ethereum address (0x...)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Code>{`// Response
+{
+  "wallet": "0x...",
+  "identity": { "userName": "swisstony", "rank": 15, "xUsername": null },
+  "pnl": {
+    "totalPnl": 4500000,
+    "totalVolume": 387000000,
+    "roi": 1.16,
+    "positions": { "total": 312, "winning": 187, "losing": 98, "winRate": 0.66 },
+    "bestPosition": { "title": "Trump wins 2024", "pnl": 890000, "percentPnl": 340 },
+    "pnlByCategory": [
+      { "category": "Sports", "pnl": 2100000, "positions": 89 },
+      { "category": "Crypto", "pnl": 1800000, "positions": 45 },
+      { "category": "Politics", "pnl": 600000, "positions": 67 }
+    ]
+  },
+  "profile": {
+    "categoryDistribution": [{ "category": "Sports", "percentage": 38 }],
+    "tradingFrequency": { "averageTradesPerWeek": 12 },
+    "interestClusters": [{ "label": "NBA", "marketCount": 23 }]
+  }
+}`}</Code>
+          <p className="text-xs" style={{ color: 'var(--fg-dim)' }}>Rate limit: 10 req/min</p>
+        </div>
+
+        {/* --- Momentum --- */}
+        <div className="card mb-6">
+          <h3 className="font-bold text-sm mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span style={{ color: 'var(--green)' }}>momentum</span> &mdash; Current Winning/Losing Positions
+          </h3>
+          <Code>{`GET https://quantish.live/api/markets/momentum?wallet=0x...&sort=pnl&direction=winning&limit=20`}</Code>
+          <p className="text-xs mb-3" style={{ color: 'var(--fg-muted)' }}>
+            See a wallet&apos;s live positions sorted by performance. Filter by winning or losing.
+            Each position includes current price, entry price, PNL, and category.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--border-bright)' }}>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Param</th>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Required</th>
+                  <th className="py-1" style={{ color: 'var(--fg-dim)' }}>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>wallet</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--yellow)' }}>yes</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>Ethereum address (0x...)</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>sort</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>no</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>&quot;pnl&quot; (default), &quot;percentPnl&quot;, or &quot;value&quot;</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>direction</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>no</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>&quot;winning&quot; (default), &quot;losing&quot;, or &quot;all&quot;</td>
+                </tr>
+                <tr>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>limit</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>no</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>1-100 (default 20)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Code>{`// Response
+{
+  "wallet": "0x...",
+  "identity": { "userName": "swisstony", "rank": 15 },
+  "summary": {
+    "totalPositions": 312,
+    "winningPositions": 187,
+    "totalUnrealizedPnl": 89000,
+    "avgPercentPnl": 42.3
+  },
+  "positions": [{
+    "title": "Will Bitcoin hit $200K?",
+    "outcome": "Yes",
+    "avgPrice": 0.32,
+    "curPrice": 0.67,
+    "cashPnl": 12400,
+    "percentPnl": 109.3,
+    "category": "Crypto"
+  }]
+}`}</Code>
+          <p className="text-xs" style={{ color: 'var(--fg-dim)' }}>Rate limit: 10 req/min</p>
+        </div>
+
+        {/* --- Whale Activity --- */}
+        <div className="card mb-6">
+          <h3 className="font-bold text-sm mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span style={{ color: 'var(--green)' }}>whale_activity</span> &mdash; Biggest Traders on a Market
+          </h3>
+          <Code>{`GET https://quantish.live/api/markets/whale-activity?conditionId=0x...&limit=10&minVolume=1000`}</Code>
+          <p className="text-xs mb-3" style={{ color: 'var(--fg-muted)' }}>
+            Find the largest traders on any market by volume. Includes identity, PNL, which side they&apos;re on,
+            and recent large trades with timestamps.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--border-bright)' }}>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Param</th>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Required</th>
+                  <th className="py-1" style={{ color: 'var(--fg-dim)' }}>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>conditionId</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--yellow)' }}>yes</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>Polymarket market conditionId</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>limit</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>no</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>1-50 (default 10)</td>
+                </tr>
+                <tr>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>minVolume</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>no</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>Min volume in USDC to include (default 0)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Code>{`// Response
+{
+  "market": { "conditionId": "0x...", "title": "...", "category": "Sports" },
+  "whales": [{
+    "wallet": "0x...",
+    "identity": { "userName": "domer", "rank": 3 },
+    "totalVolume": 890000,
+    "netSide": "YES",
+    "pnl": 5200000,
+    "roi": 31.2
+  }],
+  "recentLargeTrades": [{
+    "userName": "domer",
+    "side": "BUY",
+    "outcome": "Yes",
+    "volume": 45000,
+    "price": 0.72,
+    "timestamp": "2026-02-18T..."
+  }]
+}`}</Code>
+          <p className="text-xs" style={{ color: 'var(--fg-dim)' }}>Rate limit: 10 req/min</p>
+        </div>
+
+        {/* --- Contrarian Traders --- */}
+        <div className="card mb-6">
+          <h3 className="font-bold text-sm mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span style={{ color: 'var(--green)' }}>contrarian_traders</span> &mdash; Who&apos;s Betting Against Consensus
+          </h3>
+          <Code>{`GET https://quantish.live/api/markets/contrarian?conditionId=0x...&limit=10`}</Code>
+          <p className="text-xs mb-3" style={{ color: 'var(--fg-muted)' }}>
+            Find wallets taking the minority side on a market. Shows the consensus direction,
+            percentage split, and each contrarian&apos;s identity, volume, and overall PNL.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--border-bright)' }}>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Param</th>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Required</th>
+                  <th className="py-1" style={{ color: 'var(--fg-dim)' }}>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>conditionId</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--yellow)' }}>yes</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>Polymarket market conditionId</td>
+                </tr>
+                <tr>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>limit</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>no</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>1-50 (default 10)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Code>{`// Response
+{
+  "market": { "conditionId": "0x...", "title": "..." },
+  "consensus": { "side": "YES", "percentage": 78, "totalTraders": 2340 },
+  "contrarians": [{
+    "wallet": "0x...",
+    "identity": { "userName": "whale_42", "rank": 67 },
+    "side": "NO",
+    "volume": 125000,
+    "pnl": 890000,
+    "roi": 18.5
+  }]
+}`}</Code>
+          <p className="text-xs" style={{ color: 'var(--fg-dim)' }}>Rate limit: 10 req/min</p>
+        </div>
+
+        {/* --- Portfolio Overlap --- */}
+        <div className="card mb-6">
+          <h3 className="font-bold text-sm mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span style={{ color: 'var(--green)' }}>portfolio_overlap</span> &mdash; Compare Any Two Wallets
+          </h3>
+          <Code>{`GET https://quantish.live/api/markets/portfolio-overlap?walletA=0x...&walletB=0x...&limit=20`}</Code>
+          <p className="text-xs mb-3" style={{ color: 'var(--fg-muted)' }}>
+            Compare two wallets: shared markets, agreement rate (same side vs. opposite sides),
+            and positions unique to each. Both wallets include identity and PNL.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--border-bright)' }}>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Param</th>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Required</th>
+                  <th className="py-1" style={{ color: 'var(--fg-dim)' }}>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>walletA</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--yellow)' }}>yes</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>First wallet (0x...)</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>walletB</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--yellow)' }}>yes</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>Second wallet (0x...)</td>
+                </tr>
+                <tr>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>limit</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>no</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>1-50 (default 20)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Code>{`// Response
+{
+  "wallets": {
+    "a": { "identity": { "userName": "gmanas", "rank": 21 }, "pnl": 3200000, "roi": 0.68 },
+    "b": { "identity": { "userName": "paas2", "rank": 8 }, "pnl": 2100000, "roi": 24.7 }
+  },
+  "overlap": {
+    "sharedMarkets": 10,
+    "totalMarketsA": 45,
+    "totalMarketsB": 62,
+    "overlapPercentage": 18.7,
+    "agreementRate": 0.0
+  },
+  "sharedPositions": [{
+    "title": "Super Bowl LX winner",
+    "category": "Sports",
+    "walletA": { "side": "YES", "volume": 12000 },
+    "walletB": { "side": "NO", "volume": 8500 },
+    "agreement": false
+  }]
+}`}</Code>
+          <p className="text-xs" style={{ color: 'var(--fg-dim)' }}>Rate limit: 5 req/min</p>
+        </div>
+
+        {/* --- Related Markets --- */}
+        <div className="card mb-6">
+          <h3 className="font-bold text-sm mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            <span style={{ color: 'var(--green)' }}>related_markets</span> &mdash; Semantically Similar Markets
+          </h3>
+          <Code>{`GET https://quantish.live/api/markets/related?markets=slug1,slug2&platform=all&limit=20`}</Code>
+          <p className="text-xs mb-3" style={{ color: 'var(--fg-muted)' }}>
+            Find semantically related prediction markets across all platforms using vector embeddings.
+            Pass slugs, conditionIds, or event tickers.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--border-bright)' }}>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Param</th>
+                  <th className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>Required</th>
+                  <th className="py-1" style={{ color: 'var(--fg-dim)' }}>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>markets</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--yellow)' }}>yes</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>Comma-separated slugs, conditionIds, or eventTickers (max 10)</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>platform</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>no</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>&quot;polymarket&quot;, &quot;kalshi&quot;, &quot;limitless&quot;, or &quot;all&quot; (default)</td>
+                </tr>
+                <tr>
+                  <td className="py-1 pr-4" style={{ color: 'var(--cyan)' }}>limit</td>
+                  <td className="py-1 pr-4" style={{ color: 'var(--fg-dim)' }}>no</td>
+                  <td className="py-1" style={{ color: 'var(--fg-muted)' }}>1-50 (default 20)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Code>{`// Response
+{
+  "results": [{
+    "title": "Will Bitcoin reach $150k by June?",
+    "relevanceScore": 0.87,
+    "platform": "polymarket",
+    "category": "Crypto",
+    "volume": 245000,
+    "url": "https://polymarket.com/event/..."
+  }],
+  "meta": { "algorithm": "centroid_embedding", "searchTimeMs": 142 }
+}`}</Code>
+          <p className="text-xs" style={{ color: 'var(--fg-dim)' }}>Rate limit: 30 req/min</p>
         </div>
       </Section>
 
