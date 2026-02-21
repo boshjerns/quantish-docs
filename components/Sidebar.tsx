@@ -127,8 +127,12 @@ export default function Sidebar() {
       {/* Mobile menu button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 p-2 rounded-md md:hidden"
-        style={{ background: 'var(--pn-surface)', border: '1px solid var(--pn-border)' }}
+        className="fixed top-3 left-3 z-50 p-2.5 rounded-xl md:hidden shadow-lg"
+        style={{
+          background: 'var(--pn-surface)',
+          border: '1px solid var(--pn-border)',
+          boxShadow: 'var(--shadow)',
+        }}
       >
         {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>
@@ -136,7 +140,7 @@ export default function Sidebar() {
       {/* Mobile overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -144,15 +148,16 @@ export default function Sidebar() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 h-screen w-[260px] z-40
+          fixed top-0 left-0 h-screen w-[280px] z-40
           overflow-y-auto overflow-x-hidden
-          transition-transform duration-200
+          transition-transform duration-300 ease-out
           md:translate-x-0
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
         style={{
           background: 'var(--pn-surface)',
           borderRight: '1px solid var(--pn-border)',
+          WebkitOverflowScrolling: 'touch',
         }}
       >
         {/* Logo */}

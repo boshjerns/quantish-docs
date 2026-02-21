@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="min-h-screen">
+        <div className="min-h-screen overflow-x-hidden">
           <Sidebar />
           <main
             className="transition-all duration-200"
@@ -24,7 +24,7 @@ export default function RootLayout({
               minHeight: '100vh',
             }}
           >
-            <div className="max-w-[900px] mx-auto px-6 py-12">
+            <div className="max-w-[900px] mx-auto px-4 py-8 md:px-6 md:py-12 overflow-x-hidden">
               {children}
             </div>
           </main>
