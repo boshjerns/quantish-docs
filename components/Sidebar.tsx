@@ -1,149 +1,227 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronDown, ChevronRight, Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import { Search } from '@/components/Search';
+import { navigation, type NavItem } from '@/lib/navigation';
 
-interface NavItem {
-  title: string;
-  href?: string;
-  items?: NavItem[];
-  logo?: string; // Platform logo path
+// Recursively check if any descendant href matches the pathname
+function hasActiveDescendant(item: NavItem, pathname: string): boolean {
+  if (item.href === pathname) return true;
+  if (item.href && pathname.startsWith(item.href + '/')) return true;
+  return item.items?.some(child => hasActiveDescendant(child, pathname)) || false;
 }
 
-const navigation: NavItem[] = [
-  {
-    title: 'Introduction',
-    items: [
-      { title: 'Overview', href: '/introduction' },
-      { title: 'Quick Start', href: '/introduction/quickstart' },
-      { title: 'Authentication', href: '/introduction/authentication' },
-    ],
-  },
-  {
-    title: 'API Reference',
-    items: [
-      { title: 'Overview', href: '/api' },
-      { title: 'Authentication', href: '/api/auth' },
-      { title: 'Markets', href: '/api/markets' },
-      { title: 'Wallet Analytics', href: '/api/wallets' },
-      { title: 'Account', href: '/api/account' },
-      { title: 'Polymarket', href: '/api/polymarket', logo: '/polymarket-logo.svg' },
-      { title: 'Kalshi', href: '/api/kalshi', logo: '/kalshi-logo.svg' },
-      { title: 'Limitless', href: '/api/limitless', logo: '/limitless-logo.svg' },
-    ],
-  },
-  {
-    title: 'MCP Servers',
-    items: [
-      { title: 'Overview', href: '/mcp' },
-      { title: 'Discovery', href: '/mcp/discovery' },
-      { title: 'Polymarket', href: '/mcp/polymarket', logo: '/polymarket-logo.svg' },
-      { title: 'Kalshi', href: '/mcp/kalshi', logo: '/kalshi-logo.svg' },
-      { title: 'Limitless', href: '/mcp/limitless', logo: '/limitless-logo.svg' },
-    ],
-  },
-  {
-    title: 'Guides',
-    items: [
-      { title: 'Wallet Setup', href: '/guides/wallet-setup' },
-      { title: 'Trading Flow', href: '/guides/trading-flow' },
-    ],
-  },
-];
+// Get all titles that should be expanded to show the active page
+function getExpandedTitles(items: NavItem[], pathname: string): string[] {
+  const expanded: string[] = [];
+  for (const item of items) {
+    if (item.items && hasActiveDescendant(item, pathname)) {
+      expanded.push(item.title);
+      expanded.push(...getExpandedTitles(item.items, pathname));
+    }
+  }
+  return expanded;
+}
 
-function Section({ item, expandedSections, toggleSection }: {
+// Recursive nav node component
+function NavNode({ item, depth, expandedKeys, toggleExpand, pathname }: {
   item: NavItem;
-  expandedSections: string[];
-  toggleSection: (title: string) => void;
+  depth: number;
+  expandedKeys: Set<string>;
+  toggleExpand: (key: string) => void;
+  pathname: string;
 }) {
-  const pathname = usePathname();
-  const isExpanded = expandedSections.includes(item.title);
   const hasItems = item.items && item.items.length > 0;
+  const isLink = !!item.href && !hasItems;
+  const isExpandable = hasItems;
+  // Use a unique key combining depth and title to avoid collisions
+  const expandKey = `${depth}:${item.title}`;
+  const isExpanded = expandedKeys.has(expandKey);
+  const isActive = item.href === pathname || (item.href && pathname.startsWith(item.href + '/'));
 
-  // Check if any child is active
-  const hasActiveChild = item.items?.some(sub => sub.href === pathname);
+  // Level 0: Top section headers (Introduction, API Reference, etc.)
+  if (depth === 0) {
+    return (
+      <div className="mb-3">
+        {isExpandable ? (
+          <button
+            onClick={() => toggleExpand(expandKey)}
+            className="flex items-center justify-between w-full px-3 py-2 text-xs font-semibold uppercase tracking-wider hover:bg-[var(--pn-elevated)] rounded-md transition-colors"
+            style={{ color: hasActiveDescendant(item, pathname) ? 'var(--pn-accent)' : 'var(--pn-text-secondary)' }}
+          >
+            <span>{item.title}</span>
+            {isExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
+          </button>
+        ) : isLink ? (
+          <Link href={item.href!} className="block px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded-md transition-colors"
+            style={{ color: isActive ? 'var(--pn-accent)' : 'var(--pn-text-secondary)' }}>
+            {item.title}
+          </Link>
+        ) : null}
+        {isExpandable && isExpanded && (
+          <div className="mt-1 ml-2 space-y-0.5 border-l border-[var(--pn-border)] pl-2">
+            {item.items!.map(child => (
+              <NavNode key={child.title} item={child} depth={1} expandedKeys={expandedKeys} toggleExpand={toggleExpand} pathname={pathname} />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
 
-  return (
-    <div className="mb-4">
-      {hasItems ? (
-        <button
-          onClick={() => toggleSection(item.title)}
-          className="flex items-center justify-between w-full px-3 py-2 text-xs font-semibold uppercase tracking-wider hover:bg-[var(--pn-elevated)] rounded-md transition-colors"
-          style={{ color: hasActiveChild ? 'var(--pn-accent)' : 'var(--pn-text-secondary)' }}
-        >
-          <span>{item.title}</span>
-          {isExpanded ? (
-            <ChevronDown className="w-3 h-3" />
-          ) : (
-            <ChevronRight className="w-3 h-3" />
-          )}
-        </button>
-      ) : (
-        <Link
-          href={item.href || '#'}
-          className="block px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded-md transition-colors"
-          style={{ color: pathname === item.href ? 'var(--pn-accent)' : 'var(--pn-text-secondary)' }}
-        >
+  // Level 1: Platform links or collapsible platform groups
+  if (depth === 1) {
+    // Simple link (e.g., "Overview")
+    if (isLink) {
+      return (
+        <Link href={item.href!}
+          className="flex items-center gap-2 px-3 py-1.5 text-sm rounded-md transition-colors"
+          style={{
+            color: isActive ? 'var(--pn-accent)' : 'var(--pn-text-secondary)',
+            background: isActive ? 'var(--pn-accent-muted)' : 'transparent',
+          }}>
+          {item.logo && <Image src={item.logo} alt="" width={14} height={14} className="rounded-sm opacity-70" />}
           {item.title}
         </Link>
-      )}
-      {(hasItems && isExpanded) && (
-        <div className="mt-1 ml-2 space-y-0.5 border-l border-[var(--pn-border)] pl-3">
-          {item.items!.map((sub) => (
-            <Link
-              key={sub.href}
-              href={sub.href || '#'}
-              className="flex items-center gap-2 px-3 py-1.5 text-sm rounded-md transition-colors"
-              style={{
-                color: pathname === sub.href ? 'var(--pn-accent)' : 'var(--pn-text-secondary)',
-                background: pathname === sub.href ? 'var(--pn-accent-muted)' : 'transparent',
-              }}
-            >
-              {sub.logo && (
-                <Image
-                  src={sub.logo}
-                  alt=""
-                  width={14}
-                  height={14}
-                  className="rounded-sm opacity-70"
-                />
+      );
+    }
+
+    // Collapsible platform group
+    if (isExpandable) {
+      return (
+        <div className="mt-0.5">
+          <button
+            onClick={() => toggleExpand(expandKey)}
+            className="flex items-center gap-2 w-full px-3 py-1.5 text-sm rounded-md hover:bg-[var(--pn-elevated)] transition-colors text-left"
+            style={{ color: hasActiveDescendant(item, pathname) ? 'var(--pn-accent)' : 'var(--pn-text-secondary)' }}
+          >
+            {item.logo && <Image src={item.logo} alt="" width={14} height={14} className="rounded-sm opacity-70" />}
+            <span className="flex-1">{item.title}</span>
+            {isExpanded ? <ChevronDown className="w-3 h-3 shrink-0" /> : <ChevronRight className="w-3 h-3 shrink-0" />}
+          </button>
+          {isExpanded && (
+            <div className="ml-3 mt-0.5 space-y-0.5 border-l border-[var(--pn-border)] pl-2">
+              {/* Platform landing page link */}
+              {item.href && (
+                <Link href={item.href}
+                  className="flex items-center px-3 py-1 text-xs rounded-md transition-colors"
+                  style={{
+                    color: pathname === item.href ? 'var(--pn-accent)' : 'var(--pn-text-muted)',
+                    background: pathname === item.href ? 'var(--pn-accent-muted)' : 'transparent',
+                  }}>
+                  Overview
+                </Link>
               )}
-              {sub.title}
-            </Link>
-          ))}
+              {item.items!.map(child => (
+                <NavNode key={child.title} item={child} depth={2} expandedKeys={expandedKeys} toggleExpand={toggleExpand} pathname={pathname} />
+              ))}
+            </div>
+          )}
         </div>
-      )}
-    </div>
-  );
+      );
+    }
+
+    return null;
+  }
+
+  // Level 2: Subcategory group or direct endpoint link
+  if (depth === 2) {
+    // Direct endpoint link (flat platforms with < 8 endpoints)
+    if (isLink) {
+      return (
+        <Link href={item.href!}
+          className="flex items-center px-3 py-1 text-xs rounded-md transition-colors"
+          style={{
+            color: isActive ? 'var(--pn-accent)' : 'var(--pn-text-muted)',
+            background: isActive ? 'var(--pn-accent-muted)' : 'transparent',
+          }}>
+          {item.title}
+        </Link>
+      );
+    }
+
+    // Subcategory group
+    if (isExpandable) {
+      return (
+        <div className="mt-1">
+          <button
+            onClick={() => toggleExpand(expandKey)}
+            className="flex items-center gap-1 w-full px-3 py-1 text-xs font-medium rounded-md hover:bg-[var(--pn-elevated)] transition-colors text-left"
+            style={{ color: hasActiveDescendant(item, pathname) ? 'var(--pn-accent)' : 'var(--pn-text-muted)' }}
+          >
+            <span className="flex-1">{item.title}</span>
+            {isExpanded ? <ChevronDown className="w-2.5 h-2.5 shrink-0" /> : <ChevronRight className="w-2.5 h-2.5 shrink-0" />}
+          </button>
+          {isExpanded && (
+            <div className="ml-2 mt-0.5 space-y-0.5">
+              {item.items!.map(child => (
+                <NavNode key={child.title} item={child} depth={3} expandedKeys={expandedKeys} toggleExpand={toggleExpand} pathname={pathname} />
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+  // Level 3+: Endpoint links
+  if (isLink) {
+    return (
+      <Link href={item.href!}
+        className="block px-3 py-1 text-xs rounded-md transition-colors truncate"
+        style={{
+          color: isActive ? 'var(--pn-accent)' : 'var(--pn-text-muted)',
+          background: isActive ? 'var(--pn-accent-muted)' : 'transparent',
+        }}
+        title={item.title}>
+        {item.title}
+      </Link>
+    );
+  }
+
+  return null;
 }
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  // Auto-expand sections based on current path
-  const getInitialExpanded = () => {
-    const expanded: string[] = [];
-    navigation.forEach(section => {
-      if (section.items?.some(item => item.href === pathname)) {
-        expanded.push(section.title);
+  // Calculate initially expanded sections based on current path
+  const initialExpanded = useMemo(() => {
+    const titles = getExpandedTitles(navigation, pathname);
+    // Build the expandKey format: "depth:title"
+    const keys = new Set<string>();
+    // We need to walk the tree with depth tracking
+    function walk(items: NavItem[], depth: number) {
+      for (const item of items) {
+        if (item.items && hasActiveDescendant(item, pathname)) {
+          keys.add(`${depth}:${item.title}`);
+          walk(item.items, depth + 1);
+        }
       }
+    }
+    walk(navigation, 0);
+    return keys;
+  }, [pathname]);
+
+  const [expandedKeys, setExpandedKeys] = useState<Set<string>>(initialExpanded);
+
+  const toggleExpand = (key: string) => {
+    setExpandedKeys(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
     });
-    return expanded;
-  };
-
-  const [expandedSections, setExpandedSections] = useState<string[]>(getInitialExpanded);
-
-  const toggleSection = (title: string) => {
-    setExpandedSections(prev =>
-      prev.includes(title)
-        ? prev.filter(t => t !== title)
-        : [...prev, title]
-    );
   };
 
   return (
@@ -212,13 +290,15 @@ export default function Sidebar() {
         </div>
 
         {/* Navigation */}
-        <nav className="p-4">
+        <nav className="p-4 pb-24">
           {navigation.map((item) => (
-            <Section
+            <NavNode
               key={item.title}
               item={item}
-              expandedSections={expandedSections}
-              toggleSection={toggleSection}
+              depth={0}
+              expandedKeys={expandedKeys}
+              toggleExpand={toggleExpand}
+              pathname={pathname}
             />
           ))}
         </nav>

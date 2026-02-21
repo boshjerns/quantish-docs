@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Fuse from 'fuse.js';
-import { searchIndex, SearchItem } from '@/lib/search-index';
+import { searchIndex, type SearchItem } from '@/lib/search-index';
 
 export function Search() {
   const [query, setQuery] = useState('');
@@ -26,7 +26,7 @@ export function Search() {
   // Search as user types
   useEffect(() => {
     if (query.trim().length > 0) {
-      const searchResults = fuse.search(query, { limit: 5 });
+      const searchResults = fuse.search(query, { limit: 8 });
       setResults(searchResults.map((r) => r.item));
       setSelectedIndex(0);
       setIsOpen(true);
@@ -134,11 +134,22 @@ export function Search() {
               }}
             >
               <div className="flex items-center justify-between gap-2">
-                <span
-                  className="text-sm font-medium truncate"
-                  style={{ color: index === selectedIndex ? 'var(--pn-accent)' : 'var(--pn-text)' }}
-                >
-                  {item.title}
+                <span className="flex items-center gap-1.5 truncate">
+                  {item.method && (
+                    <span className="text-[10px] font-mono font-bold shrink-0 px-1 py-0.5 rounded"
+                      style={{
+                        background: item.method === 'GET' ? 'rgba(34,197,94,0.15)' : item.method === 'POST' ? 'rgba(59,130,246,0.15)' : item.method === 'DELETE' ? 'rgba(239,68,68,0.15)' : 'rgba(234,179,8,0.15)',
+                        color: item.method === 'GET' ? '#22c55e' : item.method === 'POST' ? '#3b82f6' : item.method === 'DELETE' ? '#ef4444' : '#eab308',
+                      }}>
+                      {item.method}
+                    </span>
+                  )}
+                  <span
+                    className="text-sm font-medium truncate"
+                    style={{ color: index === selectedIndex ? 'var(--pn-accent)' : 'var(--pn-text)' }}
+                  >
+                    {item.title}
+                  </span>
                 </span>
                 <span
                   className="text-xs shrink-0 px-1.5 py-0.5 rounded"
