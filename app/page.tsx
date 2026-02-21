@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Search, Wallet, BarChart3, Bot, Terminal } from 'lucide-react';
+import { ArrowRight, Terminal } from 'lucide-react';
 
 const MCP_SERVERS = {
   discovery: {
@@ -228,32 +228,39 @@ export default function Home() {
         )}
       </section>
 
-      {/* Features Grid */}
-      <section className="features-section">
-        <h2>Everything You Need</h2>
-        <div className="features-grid">
-          <div className="feature-card">
-            <Search className="feature-icon" />
-            <h3>Cross-Platform Search</h3>
-            <p>39,000+ markets from Polymarket, Kalshi, and Limitless. Search, filter by probability, find arbitrage.</p>
-          </div>
+      {/* Features - Clean List Style */}
+      <section className="features-list-section">
+        <h2>Built for AI Agents</h2>
 
-          <div className="feature-card">
-            <Wallet className="feature-icon" />
-            <h3>Unified Trading</h3>
-            <p>Place orders, manage positions, and redeem winnings on any platform through MCP tools.</p>
+        <div className="feature-row">
+          <div className="feature-content">
+            <h3>Search 39,000+ Markets</h3>
+            <p>Find markets across Polymarket, Kalshi, and Limitless with semantic search.</p>
+            <code className="feature-example">search_markets "bitcoin above $100k by 2027"</code>
           </div>
+        </div>
 
-          <div className="feature-card">
-            <BarChart3 className="feature-icon" />
-            <h3>Wallet Analytics</h3>
-            <p>Trader profiles, whale tracking, social discovery, momentum signals, and portfolio overlap analysis.</p>
+        <div className="feature-row">
+          <div className="feature-content">
+            <h3>Place Orders Instantly</h3>
+            <p>Buy YES or NO shares on any market with gasless transactions.</p>
+            <code className="feature-example">place_order "Trump tariff China" YES 100 @ 0.65</code>
           </div>
+        </div>
 
-          <div className="feature-card">
-            <Bot className="feature-icon" />
-            <h3>AI Agent Ready</h3>
-            <p>MCP servers for Claude Desktop, Cursor, Windsurf. One command to start trading with AI.</p>
+        <div className="feature-row">
+          <div className="feature-content">
+            <h3>Track Whale Activity</h3>
+            <p>See what the top traders are betting on, their PnL, and copy their moves.</p>
+            <code className="feature-example">get_whale_activity "0x742d..." → $47K vol, +234% ROI</code>
+          </div>
+        </div>
+
+        <div className="feature-row">
+          <div className="feature-content">
+            <h3>Find Arbitrage</h3>
+            <p>Scan for spread opportunities where YES + NO &lt; $1 across all platforms.</p>
+            <code className="feature-example">find_arbitrage → 2.3% profit on "Fed rate cut March"</code>
           </div>
         </div>
       </section>
@@ -261,17 +268,23 @@ export default function Home() {
       {/* Integration Options */}
       <section className="integrations-section">
         <h2>Two Ways to Integrate</h2>
-        <div className="integrations-grid">
-          <Link href="/mcp" className="integration-card">
-            <span className="integration-tag tag-mcp">MCP</span>
-            <h3>MCP Servers</h3>
-            <p>Model Context Protocol for AI agents. Connect to Cursor, Claude Desktop, or any MCP client.</p>
+        <div className="integrations-list">
+          <Link href="/mcp" className="integration-row">
+            <div className="integration-row-content">
+              <span className="integration-tag tag-mcp">MCP</span>
+              <h3>MCP Servers</h3>
+              <p>Model Context Protocol for AI agents. Connect to Cursor, Claude Desktop, or any MCP client.</p>
+            </div>
+            <ArrowRight className="w-4 h-4 text-[var(--pn-text-muted)]" />
           </Link>
 
-          <a href="https://github.com/joinQuantish" className="integration-card">
-            <span className="integration-tag tag-skill">Skills</span>
-            <h3>Claude Code Skills</h3>
-            <p>Drop-in skills for Claude Code CLI. One command to start trading.</p>
+          <a href="https://github.com/joinQuantish" className="integration-row">
+            <div className="integration-row-content">
+              <span className="integration-tag tag-skill">Skills</span>
+              <h3>Claude Code Skills</h3>
+              <p>Drop-in skills for Claude Code CLI. One command to start trading.</p>
+            </div>
+            <ArrowRight className="w-4 h-4 text-[var(--pn-text-muted)]" />
           </a>
         </div>
       </section>
