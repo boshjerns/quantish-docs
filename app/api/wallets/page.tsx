@@ -1,67 +1,35 @@
 import type { Metadata } from 'next';
+import { endpointsByCategory, categoryInfo } from '@/lib/api-endpoints';
+import { EndpointCard } from '@/components/api/EndpointCard';
 
 export const metadata: Metadata = {
-  title: 'Wallets API - Quantish Docs',
-  description: 'Wallet management and transfers.',
+  title: 'Wallet Analytics API - Quantish Docs',
+  description: 'Wallet profiles, whale tracking, and social discovery.',
 };
 
 export default function WalletsAPIPage() {
+  const endpoints = endpointsByCategory.wallets;
+  const info = categoryInfo.wallets;
+
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-4" style={{ color: 'var(--pn-text)' }}>
-        Wallets API
-      </h1>
-      <p className="text-lg mb-8" style={{ color: 'var(--pn-text-secondary)' }}>
-        Manage wallets, check balances, transfer funds, and swap tokens.
-      </p>
-
-      <section className="mb-10">
-        <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--pn-text)' }}>
-          Get Balances
-        </h2>
-        <div className="card mb-4">
-          <code className="text-sm" style={{ color: 'var(--pn-accent)' }}>GET /v1/wallet/balances</code>
-          <p className="text-sm mt-2" style={{ color: 'var(--pn-text-secondary)' }}>
-            Get all token balances for your wallet.
-          </p>
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-2">
+          <h1 className="text-3xl font-bold" style={{ color: 'var(--pn-text)' }}>
+            {info.name}
+          </h1>
+          <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-xs">Public</span>
         </div>
-        <pre className="p-4 rounded-lg text-xs overflow-x-auto" style={{ background: 'var(--code-bg)', color: 'var(--code-text)' }}>
-{`curl "https://api.quantish.live/v1/wallet/balances" \\
-  -H "x-api-key: YOUR_KEY"
+        <p className="text-lg" style={{ color: 'var(--pn-text-secondary)' }}>
+          {info.description}
+        </p>
+      </div>
 
-// Response
-{
-  "usdc": "1250.00",
-  "nativeUsdc": "500.00",
-  "matic": "2.5"
-}`}
-        </pre>
-      </section>
-
-      <section className="mb-10">
-        <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--pn-text)' }}>
-          Transfer USDC
-        </h2>
-        <div className="card mb-4">
-          <code className="text-sm" style={{ color: 'var(--pn-accent)' }}>POST /v1/wallet/transfer</code>
-          <p className="text-sm mt-2" style={{ color: 'var(--pn-text-secondary)' }}>
-            Transfer USDC to another address.
-          </p>
-        </div>
-        <pre className="p-4 rounded-lg text-xs overflow-x-auto" style={{ background: 'var(--code-bg)', color: 'var(--code-text)' }}>
-{`curl -X POST "https://api.quantish.live/v1/wallet/transfer" \\
-  -H "x-api-key: YOUR_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "to": "0x...",
-    "amount": "100.00"
-  }'`}
-        </pre>
-      </section>
-
-      <p className="text-sm" style={{ color: 'var(--pn-text-muted)' }}>
-        For full API documentation, see the interactive API explorer at api.quantish.live
-      </p>
+      <div className="space-y-4">
+        {endpoints.map((endpoint) => (
+          <EndpointCard key={endpoint.path} endpoint={endpoint} />
+        ))}
+      </div>
     </div>
   );
 }

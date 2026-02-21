@@ -3,13 +3,13 @@ import { endpointsByCategory, categoryInfo } from '@/lib/api-endpoints';
 import { EndpointCard } from '@/components/api/EndpointCard';
 
 export const metadata: Metadata = {
-  title: 'Markets API - Quantish Docs',
-  description: 'Search and explore prediction markets.',
+  title: 'Authentication API - Quantish Docs',
+  description: 'Account signup and API key management.',
 };
 
-export default function MarketsAPIPage() {
-  const endpoints = endpointsByCategory.markets;
-  const info = categoryInfo.markets;
+export default function AuthAPIPage() {
+  const endpoints = endpointsByCategory.auth;
+  const info = categoryInfo.auth;
 
   return (
     <div>

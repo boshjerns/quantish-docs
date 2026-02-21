@@ -22,6 +22,19 @@ const navigation: NavItem[] = [
     ],
   },
   {
+    title: 'API Reference',
+    items: [
+      { title: 'Overview', href: '/api' },
+      { title: 'Authentication', href: '/api/auth' },
+      { title: 'Markets', href: '/api/markets' },
+      { title: 'Wallet Analytics', href: '/api/wallets' },
+      { title: 'Account', href: '/api/account' },
+      { title: 'Polymarket', href: '/api/polymarket' },
+      { title: 'Kalshi', href: '/api/kalshi' },
+      { title: 'Limitless', href: '/api/limitless' },
+    ],
+  },
+  {
     title: 'MCP Servers',
     items: [
       { title: 'Overview', href: '/mcp' },

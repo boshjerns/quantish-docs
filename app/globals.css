@@ -933,3 +933,99 @@ html, body {
     padding-top: 1rem !important;
   }
 }
+
+/* ==================== API PLAYGROUND STYLES ==================== */
+/* HTTP Method badges */
+.method-get {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.method-post {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.method-put {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.method-delete {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.dark .method-get {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.dark .method-post {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+}
+
+.dark .method-put {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+}
+
+.dark .method-delete {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+/* Try It Panel */
+.try-it-panel {
+  background: var(--pn-elevated);
+  border: 1px solid var(--pn-border);
+  border-radius: var(--radius);
+}
+
+/* Response viewer */
+.response-viewer {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: var(--radius);
+}
+
+/* API key input */
+.api-key-input {
+  background: var(--pn-elevated);
+  border: 1px solid var(--pn-border);
+  border-radius: var(--radius);
+}
+
+/* Auth badge */
+.auth-required {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+}
+
+.public-badge {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
+}
+
+.dark .auth-required {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+.dark .public-badge {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
