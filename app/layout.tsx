@@ -21,10 +21,10 @@ export default function RootLayout({
             <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
               <div className="flex items-center gap-6">
                 <Link href="/" className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'var(--pn-accent)' }}>
                     <span className="text-white font-bold text-sm">Q</span>
                   </div>
-                  <span className="font-bold text-lg tracking-tight">Quantish</span>
+                  <span className="font-bold text-lg tracking-tight" style={{ color: 'hsl(var(--foreground))' }}>Quantish</span>
                 </Link>
                 <nav className="flex items-center gap-1">
                   <Link
