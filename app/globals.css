@@ -342,18 +342,24 @@
 
 .ascii-logo {
   font-family: var(--font-mono);
-  font-size: 0.4rem;
-  line-height: 1.15;
+  font-size: 0.35rem;
+  line-height: 1.2;
   color: var(--pn-accent);
   margin-bottom: 1.5rem;
-  display: none;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+@media (min-width: 480px) {
+  .ascii-logo {
+    font-size: 0.45rem;
+  }
 }
 
 @media (min-width: 640px) {
   .ascii-logo {
     font-size: 0.55rem;
-    display: block;
   }
 }
 
@@ -365,7 +371,7 @@
 
 @media (min-width: 1024px) {
   .ascii-logo {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
   }
 }
 
