@@ -157,8 +157,8 @@ export default function Home() {
         <h1 className="hero-title">QUANTISH</h1>
         <p className="hero-tagline">Unified Prediction Market Infrastructure</p>
         <p className="hero-subtitle">
-          One API key. Three platforms. Search markets, place trades, and manage
-          wallets across Polymarket, Kalshi, and Limitless.
+          Search markets, place trades, and manage wallets across
+          Polymarket, Kalshi, and Limitless through MCP servers built for AI agents.
         </p>
         <div className="hero-actions">
           <Link href="/introduction" className="btn-primary">
@@ -192,7 +192,7 @@ export default function Home() {
       {/* Key Generator */}
       <section className="generator-section">
         <h2>Get API Keys</h2>
-        <p>Enter your email to generate keys for all MCP servers at once.</p>
+        <p>Enter your email to generate keys for each MCP server.</p>
         <div className="generator-card">
           <input
             type="email"
@@ -241,7 +241,7 @@ export default function Home() {
           <div className="feature-card">
             <Wallet className="feature-icon" />
             <h3>Unified Trading</h3>
-            <p>Place orders, manage positions, and redeem winnings on any platform through a single REST interface.</p>
+            <p>Place orders, manage positions, and redeem winnings on any platform through MCP tools.</p>
           </div>
 
           <div className="feature-card">
@@ -260,14 +260,8 @@ export default function Home() {
 
       {/* Integration Options */}
       <section className="integrations-section">
-        <h2>Three Ways to Integrate</h2>
+        <h2>Two Ways to Integrate</h2>
         <div className="integrations-grid">
-          <Link href="/api/markets" className="integration-card">
-            <span className="integration-tag tag-api">REST API</span>
-            <h3>api.quantish.live/v1</h3>
-            <p>Standard REST endpoints with OpenAPI spec. Works with any language.</p>
-          </Link>
-
           <Link href="/mcp" className="integration-card">
             <span className="integration-tag tag-mcp">MCP</span>
             <h3>MCP Servers</h3>
@@ -309,7 +303,7 @@ curl "https://quantish-sdk-production.up.railway.app/mcp" \\
       {/* CTA */}
       <section className="cta-section">
         <h2>Ready to start?</h2>
-        <p>Generate your API keys and start trading prediction markets with AI.</p>
+        <p>Generate your API keys and start trading prediction markets.</p>
         <div className="cta-actions">
           <Link href="/introduction/quickstart" className="btn-primary">
             Quick Start <ArrowRight className="w-4 h-4" />

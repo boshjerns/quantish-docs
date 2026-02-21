@@ -32,15 +32,6 @@ const navigation: NavItem[] = [
     ],
   },
   {
-    title: 'API Reference',
-    items: [
-      { title: 'Markets', href: '/api/markets' },
-      { title: 'Trading', href: '/api/trading' },
-      { title: 'Wallets', href: '/api/wallets' },
-      { title: 'Analytics', href: '/api/analytics' },
-    ],
-  },
-  {
     title: 'Guides',
     items: [
       { title: 'Wallet Setup', href: '/guides/wallet-setup' },
