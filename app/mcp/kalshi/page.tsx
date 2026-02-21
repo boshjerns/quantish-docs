@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Kalshi MCP - Quantish Docs',
@@ -6,12 +7,20 @@ export const metadata: Metadata = {
 };
 
 const ToolRow = ({ name, desc, params }: { name: string; desc: string; params: string }) => (
-  <tr className="border-b last:border-0" style={{ borderColor: 'var(--pn-border)' }}>
-    <td className="py-2 pr-4">
-      <code className="text-xs font-mono bg-[var(--pn-elevated)] px-1.5 py-0.5 rounded">{name}</code>
+  <tr style={{ borderBottom: '1px solid var(--pn-border)' }}>
+    <td className="py-3 pr-4">
+      <div className="flex items-center gap-2">
+        <Image src="/kalshi-logo.svg" alt="" width={16} height={16} className="rounded-sm opacity-60" />
+        <code
+          className="text-xs font-mono px-1.5 py-0.5 rounded"
+          style={{ background: 'var(--pn-elevated)', color: 'var(--pn-text)' }}
+        >
+          {name}
+        </code>
+      </div>
     </td>
-    <td className="py-2 pr-4 text-sm" style={{ color: 'var(--pn-text-secondary)' }}>{desc}</td>
-    <td className="py-2 text-xs font-mono" style={{ color: 'var(--pn-text-muted)' }}>{params}</td>
+    <td className="py-3 pr-4 text-sm" style={{ color: 'var(--pn-text-secondary)' }}>{desc}</td>
+    <td className="py-3 text-xs font-mono" style={{ color: 'var(--pn-text-muted)' }}>{params}</td>
   </tr>
 );
 
@@ -19,13 +28,17 @@ export default function KalshiPage() {
   return (
     <div>
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-lg bg-emerald-500 flex items-center justify-center">
-          <span className="text-white font-bold">K</span>
-        </div>
+        <Image
+          src="/kalshi-logo.svg"
+          alt="Kalshi"
+          width={48}
+          height={48}
+          className="rounded-xl"
+        />
         <div>
           <h1 className="text-3xl font-bold" style={{ color: 'var(--pn-text)' }}>Kalshi MCP</h1>
           <p className="text-sm" style={{ color: 'var(--pn-text-muted)' }}>
-            https://kalshi-mcp-production-7c2c.up.railway.app/mcp • Solana • Trading
+            kalshi-mcp-production-7c2c.up.railway.app/mcp • Solana • Trading
           </p>
         </div>
       </div>
@@ -39,13 +52,16 @@ export default function KalshiPage() {
         <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--pn-text)' }}>
           Authentication & Setup
         </h2>
-        <div className="card overflow-x-auto">
+        <div
+          className="overflow-x-auto rounded-xl"
+          style={{ background: 'var(--pn-elevated)', border: '1px solid var(--pn-border)' }}
+        >
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b" style={{ borderColor: 'var(--pn-border)' }}>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
-                <th className="py-2 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
+              <tr style={{ borderBottom: '1px solid var(--pn-border)' }}>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
               </tr>
             </thead>
             <tbody>
@@ -63,13 +79,16 @@ export default function KalshiPage() {
         <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--pn-text)' }}>
           Market Operations
         </h2>
-        <div className="card overflow-x-auto">
+        <div
+          className="overflow-x-auto rounded-xl"
+          style={{ background: 'var(--pn-elevated)', border: '1px solid var(--pn-border)' }}
+        >
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b" style={{ borderColor: 'var(--pn-border)' }}>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
-                <th className="py-2 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
+              <tr style={{ borderBottom: '1px solid var(--pn-border)' }}>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
               </tr>
             </thead>
             <tbody>
@@ -86,13 +105,16 @@ export default function KalshiPage() {
         <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--pn-text)' }}>
           Trading
         </h2>
-        <div className="card overflow-x-auto">
+        <div
+          className="overflow-x-auto rounded-xl"
+          style={{ background: 'var(--pn-elevated)', border: '1px solid var(--pn-border)' }}
+        >
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b" style={{ borderColor: 'var(--pn-border)' }}>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
-                <th className="py-2 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
+              <tr style={{ borderBottom: '1px solid var(--pn-border)' }}>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
               </tr>
             </thead>
             <tbody>
@@ -106,12 +128,18 @@ export default function KalshiPage() {
         </div>
       </section>
 
-      <section className="card" style={{ background: 'var(--pn-elevated)' }}>
-        <h3 className="font-semibold mb-2" style={{ color: 'var(--pn-text)' }}>Note on KYC</h3>
+      <section
+        className="rounded-xl p-4"
+        style={{ background: 'var(--pn-elevated)', border: '1px solid var(--pn-border)' }}
+      >
+        <h3 className="font-semibold mb-2 flex items-center gap-2" style={{ color: 'var(--pn-text)' }}>
+          <Image src="/kalshi-logo.svg" alt="" width={16} height={16} />
+          Note on KYC
+        </h3>
         <p className="text-sm" style={{ color: 'var(--pn-text-secondary)' }}>
           After Feb 27, 2026, unverified wallets cannot buy prediction market outcomes (selling and redemption still work).
-          Use <code className="text-xs bg-[var(--pn-accent-muted)] px-1 py-0.5 rounded">kalshi_check_kyc_status</code> and
-          <code className="text-xs bg-[var(--pn-accent-muted)] px-1 py-0.5 rounded">kalshi_get_kyc_link</code> for DFlow Proof verification.
+          Use <code className="text-xs px-1 py-0.5 rounded" style={{ background: 'var(--pn-accent-muted)', color: 'var(--pn-accent)' }}>kalshi_check_kyc_status</code> and
+          <code className="text-xs px-1 py-0.5 rounded" style={{ background: 'var(--pn-accent-muted)', color: 'var(--pn-accent)' }}>kalshi_get_kyc_link</code> for DFlow Proof verification.
         </p>
       </section>
     </div>

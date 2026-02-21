@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Discovery MCP - Quantish Docs',
@@ -6,12 +7,20 @@ export const metadata: Metadata = {
 };
 
 const ToolRow = ({ name, desc, params }: { name: string; desc: string; params: string }) => (
-  <tr className="border-b last:border-0" style={{ borderColor: 'var(--pn-border)' }}>
-    <td className="py-2 pr-4">
-      <code className="text-xs font-mono bg-[var(--pn-elevated)] px-1.5 py-0.5 rounded">{name}</code>
+  <tr style={{ borderBottom: '1px solid var(--pn-border)' }}>
+    <td className="py-3 pr-4">
+      <div className="flex items-center gap-2">
+        <Image src="/quantish-logo.svg" alt="" width={16} height={16} className="rounded-sm opacity-60" />
+        <code
+          className="text-xs font-mono px-1.5 py-0.5 rounded"
+          style={{ background: 'var(--pn-elevated)', color: 'var(--pn-text)' }}
+        >
+          {name}
+        </code>
+      </div>
     </td>
-    <td className="py-2 pr-4 text-sm" style={{ color: 'var(--pn-text-secondary)' }}>{desc}</td>
-    <td className="py-2 text-xs font-mono" style={{ color: 'var(--pn-text-muted)' }}>{params}</td>
+    <td className="py-3 pr-4 text-sm" style={{ color: 'var(--pn-text-secondary)' }}>{desc}</td>
+    <td className="py-3 text-xs font-mono" style={{ color: 'var(--pn-text-muted)' }}>{params}</td>
   </tr>
 );
 
@@ -19,13 +28,17 @@ export default function DiscoveryPage() {
   return (
     <div>
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center">
-          <span className="text-white font-bold">D</span>
-        </div>
+        <Image
+          src="/quantish-logo.svg"
+          alt="Discovery"
+          width={48}
+          height={48}
+          className="rounded-xl"
+        />
         <div>
           <h1 className="text-3xl font-bold" style={{ color: 'var(--pn-text)' }}>Discovery MCP</h1>
           <p className="text-sm" style={{ color: 'var(--pn-text-muted)' }}>
-            https://quantish.live/mcp • Read-only • Free
+            quantish.live/mcp • Read-only • Free
           </p>
         </div>
       </div>
@@ -39,13 +52,16 @@ export default function DiscoveryPage() {
         <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--pn-text)' }}>
           Market Search Tools
         </h2>
-        <div className="card overflow-x-auto">
+        <div
+          className="overflow-x-auto rounded-xl"
+          style={{ background: 'var(--pn-elevated)', border: '1px solid var(--pn-border)' }}
+        >
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b" style={{ borderColor: 'var(--pn-border)' }}>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
-                <th className="py-2 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
+              <tr style={{ borderBottom: '1px solid var(--pn-border)' }}>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
               </tr>
             </thead>
             <tbody>
@@ -64,13 +80,16 @@ export default function DiscoveryPage() {
         <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--pn-text)' }}>
           Arbitrage & Analysis
         </h2>
-        <div className="card overflow-x-auto">
+        <div
+          className="overflow-x-auto rounded-xl"
+          style={{ background: 'var(--pn-elevated)', border: '1px solid var(--pn-border)' }}
+        >
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b" style={{ borderColor: 'var(--pn-border)' }}>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
-                <th className="py-2 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
+              <tr style={{ borderBottom: '1px solid var(--pn-border)' }}>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
               </tr>
             </thead>
             <tbody>
@@ -87,13 +106,16 @@ export default function DiscoveryPage() {
         <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--pn-text)' }}>
           Wallet Analytics
         </h2>
-        <div className="card overflow-x-auto">
+        <div
+          className="overflow-x-auto rounded-xl"
+          style={{ background: 'var(--pn-elevated)', border: '1px solid var(--pn-border)' }}
+        >
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b" style={{ borderColor: 'var(--pn-border)' }}>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
-                <th className="py-2 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
+              <tr style={{ borderBottom: '1px solid var(--pn-border)' }}>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
               </tr>
             </thead>
             <tbody>
@@ -108,8 +130,14 @@ export default function DiscoveryPage() {
         </div>
       </section>
 
-      <section className="card" style={{ background: 'var(--pn-elevated)' }}>
-        <h3 className="font-semibold mb-2" style={{ color: 'var(--pn-text)' }}>Quick Example</h3>
+      <section
+        className="rounded-xl p-4"
+        style={{ background: 'var(--pn-elevated)', border: '1px solid var(--pn-border)' }}
+      >
+        <h3 className="font-semibold mb-2 flex items-center gap-2" style={{ color: 'var(--pn-text)' }}>
+          <Image src="/quantish-logo.svg" alt="" width={16} height={16} />
+          Quick Example
+        </h3>
         <pre className="text-xs font-mono overflow-x-auto" style={{ color: 'var(--pn-text-secondary)' }}>
 {`# Search for bitcoin markets
 search_markets(query="bitcoin price 2024", limit=5)

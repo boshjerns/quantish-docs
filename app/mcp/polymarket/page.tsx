@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Polymarket MCP - Quantish Docs',
@@ -6,12 +7,20 @@ export const metadata: Metadata = {
 };
 
 const ToolRow = ({ name, desc, params }: { name: string; desc: string; params: string }) => (
-  <tr className="border-b last:border-0" style={{ borderColor: 'var(--pn-border)' }}>
-    <td className="py-2 pr-4">
-      <code className="text-xs font-mono bg-[var(--pn-elevated)] px-1.5 py-0.5 rounded">{name}</code>
+  <tr style={{ borderBottom: '1px solid var(--pn-border)' }}>
+    <td className="py-3 pr-4">
+      <div className="flex items-center gap-2">
+        <Image src="/polymarket-logo.svg" alt="" width={16} height={16} className="rounded-sm opacity-60" />
+        <code
+          className="text-xs font-mono px-1.5 py-0.5 rounded"
+          style={{ background: 'var(--pn-elevated)', color: 'var(--pn-text)' }}
+        >
+          {name}
+        </code>
+      </div>
     </td>
-    <td className="py-2 pr-4 text-sm" style={{ color: 'var(--pn-text-secondary)' }}>{desc}</td>
-    <td className="py-2 text-xs font-mono" style={{ color: 'var(--pn-text-muted)' }}>{params}</td>
+    <td className="py-3 pr-4 text-sm" style={{ color: 'var(--pn-text-secondary)' }}>{desc}</td>
+    <td className="py-3 text-xs font-mono" style={{ color: 'var(--pn-text-muted)' }}>{params}</td>
   </tr>
 );
 
@@ -19,13 +28,17 @@ export default function PolymarketPage() {
   return (
     <div>
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
-          <span className="text-white font-bold">P</span>
-        </div>
+        <Image
+          src="/polymarket-logo.svg"
+          alt="Polymarket"
+          width={48}
+          height={48}
+          className="rounded-xl"
+        />
         <div>
           <h1 className="text-3xl font-bold" style={{ color: 'var(--pn-text)' }}>Polymarket MCP</h1>
           <p className="text-sm" style={{ color: 'var(--pn-text-muted)' }}>
-            https://quantish-sdk-production.up.railway.app/mcp • Polygon • Trading
+            quantish-sdk-production.up.railway.app/mcp • Polygon • Trading
           </p>
         </div>
       </div>
@@ -39,13 +52,16 @@ export default function PolymarketPage() {
         <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--pn-text)' }}>
           Authentication & Setup
         </h2>
-        <div className="card overflow-x-auto">
+        <div
+          className="overflow-x-auto rounded-xl"
+          style={{ background: 'var(--pn-elevated)', border: '1px solid var(--pn-border)' }}
+        >
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b" style={{ borderColor: 'var(--pn-border)' }}>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
-                <th className="py-2 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
+              <tr style={{ borderBottom: '1px solid var(--pn-border)' }}>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
               </tr>
             </thead>
             <tbody>
@@ -62,13 +78,16 @@ export default function PolymarketPage() {
         <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--pn-text)' }}>
           Trading
         </h2>
-        <div className="card overflow-x-auto">
+        <div
+          className="overflow-x-auto rounded-xl"
+          style={{ background: 'var(--pn-elevated)', border: '1px solid var(--pn-border)' }}
+        >
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b" style={{ borderColor: 'var(--pn-border)' }}>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
-                <th className="py-2 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
+              <tr style={{ borderBottom: '1px solid var(--pn-border)' }}>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
               </tr>
             </thead>
             <tbody>
@@ -87,13 +106,16 @@ export default function PolymarketPage() {
         <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--pn-text)' }}>
           Wallet Operations
         </h2>
-        <div className="card overflow-x-auto">
+        <div
+          className="overflow-x-auto rounded-xl"
+          style={{ background: 'var(--pn-elevated)', border: '1px solid var(--pn-border)' }}
+        >
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b" style={{ borderColor: 'var(--pn-border)' }}>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
-                <th className="py-2 pr-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
-                <th className="py-2 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
+              <tr style={{ borderBottom: '1px solid var(--pn-border)' }}>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Tool</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Description</th>
+                <th className="py-3 px-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--pn-text-muted)' }}>Params</th>
               </tr>
             </thead>
             <tbody>
@@ -107,13 +129,19 @@ export default function PolymarketPage() {
         </div>
       </section>
 
-      <section className="card" style={{ background: 'var(--pn-elevated)' }}>
-        <h3 className="font-semibold mb-2" style={{ color: 'var(--pn-text)' }}>Trading Flow</h3>
+      <section
+        className="rounded-xl p-4"
+        style={{ background: 'var(--pn-elevated)', border: '1px solid var(--pn-border)' }}
+      >
+        <h3 className="font-semibold mb-2 flex items-center gap-2" style={{ color: 'var(--pn-text)' }}>
+          <Image src="/polymarket-logo.svg" alt="" width={16} height={16} />
+          Trading Flow
+        </h3>
         <ol className="list-decimal list-inside text-sm space-y-1" style={{ color: 'var(--pn-text-secondary)' }}>
-          <li>Call <code className="text-xs bg-[var(--pn-accent-muted)] px-1 py-0.5 rounded">request_api_key</code> to create account</li>
-          <li>Call <code className="text-xs bg-[var(--pn-accent-muted)] px-1 py-0.5 rounded">setup_wallet</code> to deploy Safe</li>
+          <li>Call <code className="text-xs px-1 py-0.5 rounded" style={{ background: 'var(--pn-accent-muted)', color: 'var(--pn-accent)' }}>request_api_key</code> to create account</li>
+          <li>Call <code className="text-xs px-1 py-0.5 rounded" style={{ background: 'var(--pn-accent-muted)', color: 'var(--pn-accent)' }}>setup_wallet</code> to deploy Safe</li>
           <li>Deposit USDC to your Safe address</li>
-          <li>Use <code className="text-xs bg-[var(--pn-accent-muted)] px-1 py-0.5 rounded">place_order</code> to trade</li>
+          <li>Use <code className="text-xs px-1 py-0.5 rounded" style={{ background: 'var(--pn-accent-muted)', color: 'var(--pn-accent)' }}>place_order</code> to trade</li>
         </ol>
       </section>
     </div>

@@ -11,6 +11,7 @@ interface NavItem {
   title: string;
   href?: string;
   items?: NavItem[];
+  logo?: string; // Platform logo path
 }
 
 const navigation: NavItem[] = [
@@ -30,9 +31,9 @@ const navigation: NavItem[] = [
       { title: 'Markets', href: '/api/markets' },
       { title: 'Wallet Analytics', href: '/api/wallets' },
       { title: 'Account', href: '/api/account' },
-      { title: 'Polymarket', href: '/api/polymarket' },
-      { title: 'Kalshi', href: '/api/kalshi' },
-      { title: 'Limitless', href: '/api/limitless' },
+      { title: 'Polymarket', href: '/api/polymarket', logo: '/polymarket-logo.svg' },
+      { title: 'Kalshi', href: '/api/kalshi', logo: '/kalshi-logo.svg' },
+      { title: 'Limitless', href: '/api/limitless', logo: '/limitless-logo.svg' },
     ],
   },
   {
@@ -40,9 +41,9 @@ const navigation: NavItem[] = [
     items: [
       { title: 'Overview', href: '/mcp' },
       { title: 'Discovery', href: '/mcp/discovery' },
-      { title: 'Polymarket', href: '/mcp/polymarket' },
-      { title: 'Kalshi', href: '/mcp/kalshi' },
-      { title: 'Limitless', href: '/mcp/limitless' },
+      { title: 'Polymarket', href: '/mcp/polymarket', logo: '/polymarket-logo.svg' },
+      { title: 'Kalshi', href: '/mcp/kalshi', logo: '/kalshi-logo.svg' },
+      { title: 'Limitless', href: '/mcp/limitless', logo: '/limitless-logo.svg' },
     ],
   },
   {
@@ -96,12 +97,21 @@ function Section({ item, expandedSections, toggleSection }: {
             <Link
               key={sub.href}
               href={sub.href || '#'}
-              className="block px-3 py-1.5 text-sm rounded-md transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 text-sm rounded-md transition-colors"
               style={{
                 color: pathname === sub.href ? 'var(--pn-accent)' : 'var(--pn-text-secondary)',
                 background: pathname === sub.href ? 'var(--pn-accent-muted)' : 'transparent',
               }}
             >
+              {sub.logo && (
+                <Image
+                  src={sub.logo}
+                  alt=""
+                  width={14}
+                  height={14}
+                  className="rounded-sm opacity-70"
+                />
+              )}
               {sub.title}
             </Link>
           ))}

@@ -85,12 +85,26 @@ export function TryItPanel({ endpoint }: TryItPanelProps) {
   const queryParams = endpoint.params?.filter((p) => p.location === 'query') || [];
   const bodyParams = endpoint.params?.filter((p) => p.location === 'body') || [];
 
+  const inputStyle = {
+    background: 'var(--pn-surface)',
+    border: '1px solid var(--pn-border)',
+    color: 'var(--pn-text)',
+  };
+
   return (
-    <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 space-y-4">
+    <div
+      className="rounded-lg p-4 space-y-4"
+      style={{
+        background: 'rgba(0, 0, 0, 0.3)',
+        border: '1px solid var(--pn-border)',
+      }}
+    >
       {/* Header */}
       <div className="flex items-center gap-3">
         <MethodBadge method={endpoint.method} />
-        <code className="text-sm font-mono text-zinc-300">{endpoint.path}</code>
+        <code className="text-sm font-mono" style={{ color: 'var(--pn-text-secondary)' }}>
+          {endpoint.path}
+        </code>
       </div>
 
       {/* API Key for auth-required endpoints */}
@@ -101,19 +115,23 @@ export function TryItPanel({ endpoint }: TryItPanelProps) {
       {/* Path Parameters */}
       {pathParams.length > 0 && (
         <div className="space-y-2">
-          <h4 className="text-sm font-medium text-zinc-300">Path Parameters</h4>
+          <h4 className="text-sm font-medium" style={{ color: 'var(--pn-text)' }}>Path Parameters</h4>
           {pathParams.map((p) => (
             <div key={p.name} className="flex items-center gap-2">
-              <label className="text-sm text-zinc-400 w-32 shrink-0">
+              <label className="text-sm w-32 shrink-0" style={{ color: 'var(--pn-text-muted)' }}>
                 {p.name}
-                {p.required && <span className="text-red-400 ml-1">*</span>}
+                {p.required && <span style={{ color: 'var(--pn-error)' }}> *</span>}
               </label>
               <input
                 type="text"
                 value={params[p.name] || ''}
                 onChange={(e) => handleParamChange(p.name, e.target.value)}
                 placeholder={p.description}
-                className="flex-1 bg-zinc-800 border border-zinc-700 rounded px-3 py-1.5 text-sm text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-blue-500"
+                className="flex-1 rounded px-3 py-1.5 text-sm placeholder:opacity-50 focus:outline-none"
+                style={{
+                  ...inputStyle,
+                  borderColor: 'var(--pn-accent)',
+                }}
               />
             </div>
           ))}
@@ -123,19 +141,20 @@ export function TryItPanel({ endpoint }: TryItPanelProps) {
       {/* Query Parameters */}
       {queryParams.length > 0 && (
         <div className="space-y-2">
-          <h4 className="text-sm font-medium text-zinc-300">Query Parameters</h4>
+          <h4 className="text-sm font-medium" style={{ color: 'var(--pn-text)' }}>Query Parameters</h4>
           {queryParams.map((p) => (
             <div key={p.name} className="flex items-center gap-2">
-              <label className="text-sm text-zinc-400 w-32 shrink-0">
+              <label className="text-sm w-32 shrink-0" style={{ color: 'var(--pn-text-muted)' }}>
                 {p.name}
-                {p.required && <span className="text-red-400 ml-1">*</span>}
+                {p.required && <span style={{ color: 'var(--pn-error)' }}> *</span>}
               </label>
               <input
                 type={p.type === 'number' ? 'number' : 'text'}
                 value={params[p.name] || ''}
                 onChange={(e) => handleParamChange(p.name, e.target.value)}
                 placeholder={p.description}
-                className="flex-1 bg-zinc-800 border border-zinc-700 rounded px-3 py-1.5 text-sm text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-blue-500"
+                className="flex-1 rounded px-3 py-1.5 text-sm placeholder:opacity-50 focus:outline-none"
+                style={inputStyle}
               />
             </div>
           ))}
@@ -145,19 +164,20 @@ export function TryItPanel({ endpoint }: TryItPanelProps) {
       {/* Body Parameters */}
       {bodyParams.length > 0 && (
         <div className="space-y-2">
-          <h4 className="text-sm font-medium text-zinc-300">Request Body</h4>
+          <h4 className="text-sm font-medium" style={{ color: 'var(--pn-text)' }}>Request Body</h4>
           {bodyParams.map((p) => (
             <div key={p.name} className="flex items-center gap-2">
-              <label className="text-sm text-zinc-400 w-32 shrink-0">
+              <label className="text-sm w-32 shrink-0" style={{ color: 'var(--pn-text-muted)' }}>
                 {p.name}
-                {p.required && <span className="text-red-400 ml-1">*</span>}
+                {p.required && <span style={{ color: 'var(--pn-error)' }}> *</span>}
               </label>
               <input
                 type={p.type === 'number' ? 'number' : 'text'}
                 value={params[p.name] || ''}
                 onChange={(e) => handleParamChange(p.name, e.target.value)}
                 placeholder={p.description}
-                className="flex-1 bg-zinc-800 border border-zinc-700 rounded px-3 py-1.5 text-sm text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-blue-500"
+                className="flex-1 rounded px-3 py-1.5 text-sm placeholder:opacity-50 focus:outline-none"
+                style={inputStyle}
               />
             </div>
           ))}
@@ -168,7 +188,15 @@ export function TryItPanel({ endpoint }: TryItPanelProps) {
       <button
         onClick={execute}
         disabled={loading || (endpoint.requiresAuth && !apiKey)}
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded transition-colors"
+        className="w-full font-medium py-2 px-4 rounded transition-colors"
+        style={{
+          background: loading || (endpoint.requiresAuth && !apiKey)
+            ? 'var(--pn-text-muted)'
+            : 'var(--pn-accent)',
+          color: 'white',
+          opacity: loading || (endpoint.requiresAuth && !apiKey) ? 0.5 : 1,
+          cursor: loading || (endpoint.requiresAuth && !apiKey) ? 'not-allowed' : 'pointer',
+        }}
       >
         {loading ? 'Executing...' : 'Execute'}
       </button>

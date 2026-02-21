@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ApiEndpoint } from '@/lib/api-endpoints';
 import { MethodBadge } from './MethodBadge';
 import { TryItPanel } from './TryItPanel';
+import { PlatformLogo, getPlatformFromCategory } from '@/components/PlatformLogo';
 
 interface EndpointCardProps {
   endpoint: ApiEndpoint;
@@ -12,19 +13,43 @@ interface EndpointCardProps {
 
 export function EndpointCard({ endpoint, defaultExpanded = false }: EndpointCardProps) {
   const [expanded, setExpanded] = useState(defaultExpanded);
+  const platform = getPlatformFromCategory(endpoint.category);
 
   return (
-    <div className="border border-zinc-800 rounded-lg overflow-hidden">
+    <div
+      className="rounded-xl overflow-hidden transition-all duration-200"
+      style={{
+        background: 'var(--pn-elevated)',
+        border: '1px solid var(--pn-border)',
+        boxShadow: expanded ? '0 4px 24px rgba(0, 0, 0, 0.3)' : 'var(--shadow)',
+      }}
+    >
       {/* Header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center gap-4 px-4 py-3 bg-zinc-900/50 hover:bg-zinc-800/50 transition-colors text-left"
+        className="w-full flex items-center gap-4 px-4 py-3.5 transition-colors text-left hover:brightness-110"
+        style={{ background: expanded ? 'var(--pn-surface)' : 'transparent' }}
       >
+        <PlatformLogo platform={platform} size="sm" />
         <MethodBadge method={endpoint.method} />
-        <code className="text-sm font-mono text-zinc-300 flex-1">{endpoint.path}</code>
-        <span className="text-sm text-zinc-400">{endpoint.name}</span>
+        <code
+          className="text-sm font-mono flex-1"
+          style={{ color: 'var(--pn-text)' }}
+        >
+          {endpoint.path}
+        </code>
+        <span
+          className="text-sm hidden sm:block"
+          style={{ color: 'var(--pn-text-muted)' }}
+        >
+          {endpoint.name}
+        </span>
         <svg
-          className={`w-4 h-4 text-zinc-500 transition-transform ${expanded ? 'rotate-180' : ''}`}
+          className="w-4 h-4 transition-transform shrink-0"
+          style={{
+            color: 'var(--pn-text-muted)',
+            transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+          }}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -35,8 +60,13 @@ export function EndpointCard({ endpoint, defaultExpanded = false }: EndpointCard
 
       {/* Expanded Content */}
       {expanded && (
-        <div className="border-t border-zinc-800 p-4 space-y-4">
-          <p className="text-sm text-zinc-400">{endpoint.description}</p>
+        <div
+          className="border-t p-4 space-y-4"
+          style={{ borderColor: 'var(--pn-border)' }}
+        >
+          <p className="text-sm" style={{ color: 'var(--pn-text-secondary)' }}>
+            {endpoint.description}
+          </p>
           <TryItPanel endpoint={endpoint} />
         </div>
       )}
