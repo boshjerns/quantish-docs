@@ -397,8 +397,8 @@ html, body {
 
 .ascii-logo {
   font-family: var(--font-mono);
-  font-size: 0.35rem;
-  line-height: 1.2;
+  font-size: 0.5rem;
+  line-height: 1.1;
   color: var(--pn-accent);
   margin-bottom: 1.5rem;
   letter-spacing: 0.02em;
@@ -408,7 +408,7 @@ html, body {
 
 @media (min-width: 480px) {
   .ascii-logo {
-    font-size: 0.45rem;
+    font-size: 0.65rem;
   }
 }
 
@@ -420,13 +420,13 @@ html, body {
 
 @media (min-width: 768px) {
   .ascii-logo {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
   }
 }
 
 @media (min-width: 1024px) {
   .ascii-logo {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 }
 

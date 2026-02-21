@@ -154,7 +154,6 @@ export default function Home() {
           <span className="version-tag">v3.0</span>
           <span className="stats">50+ MCP tools • 39,000+ markets</span>
         </div>
-        <h1 className="hero-title">QUANTISH</h1>
         <p className="hero-tagline">Unified Prediction Market Infrastructure</p>
         <p className="hero-subtitle">
           Search markets, place trades, and manage wallets across
