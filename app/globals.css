@@ -1029,3 +1029,33 @@ html, body {
   background: rgba(16, 185, 129, 0.15);
   color: #34d399;
 }
+
+/* ==================== SEARCH STYLES ==================== */
+/* Search dropdown */
+.search-dropdown {
+  background: var(--pn-surface);
+  border: 1px solid var(--pn-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+.search-result-item {
+  transition: background 150ms ease;
+}
+
+.search-result-item:hover,
+.search-result-item.selected {
+  background: var(--pn-accent-muted);
+}
+
+.search-category-badge {
+  background: var(--pn-elevated);
+  color: var(--pn-text-muted);
+}
+
+/* No results message */
+.search-no-results {
+  background: var(--pn-surface);
+  border: 1px solid var(--pn-border);
+  color: var(--pn-text-muted);
+}

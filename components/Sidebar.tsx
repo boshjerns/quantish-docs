@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronDown, ChevronRight, Menu, X, Search } from 'lucide-react';
+import { ChevronDown, ChevronRight, Menu, X } from 'lucide-react';
 import Image from 'next/image';
+import { Search } from '@/components/Search';
 
 interface NavItem {
   title: string;
@@ -195,16 +196,9 @@ export default function Sidebar() {
           </Link>
         </div>
 
-        {/* Search placeholder */}
+        {/* Search */}
         <div className="p-4 border-b" style={{ borderColor: 'var(--pn-border)' }}>
-          <div
-            className="flex items-center gap-2 px-3 py-2 rounded-md text-sm"
-            style={{ background: 'var(--pn-elevated)', color: 'var(--pn-text-muted)' }}
-          >
-            <Search className="w-4 h-4" />
-            <span>Search...</span>
-            <span className="ml-auto text-xs opacity-50">⌘K</span>
-          </div>
+          <Search />
         </div>
 
         {/* Navigation */}
